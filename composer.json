@@ -1,0 +1,18 @@
+{
+    "name": "fried75/floky-core",
+    "description": "The Floky framework core",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Floky\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "v1p3r75",
+            "email": "elfriedv16@gmail.com"
+        }
+    ],
+    "require": {}
+}
