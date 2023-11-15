@@ -34,7 +34,6 @@ To get started with Floky, follow these steps:
 
 We welcome contributions to Floky Core. Feel free to open issues, submit pull requests, or join the community discussions.
 
-
 ## Licence
 
 Floky Core is open-source software licensed under the [MIT Licence](https://en.wikipedia.org/wiki/MIT_License).
