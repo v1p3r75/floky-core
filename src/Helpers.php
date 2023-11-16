@@ -5,6 +5,7 @@ use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Security;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
+use \Floky\Facades\Validator;
 
 /**
  * Secure data to prevent cross-site scripting (XSS) attacks, supporting strings and arrays.
@@ -134,6 +135,11 @@ function get_directory_files(string $dir): array {
     }
 
     return $files;
+}
+
+function validate(array $data, array $rules)
+{
+    return Validator::validate($data, $rules);
 }
 
 function app_root_path(string $path = "") {
