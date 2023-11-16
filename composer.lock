@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "blakvghost/php-validator",
-            "version": "v1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BlakvGhost/PHPValidator.git",
-                "reference": "cf13080c77b60bb0c70e33ff228bee7cfd24645c"
+                "reference": "b9a8d78f698926bb360cb70208d273e26b936d16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BlakvGhost/PHPValidator/zipball/cf13080c77b60bb0c70e33ff228bee7cfd24645c",
-                "reference": "cf13080c77b60bb0c70e33ff228bee7cfd24645c",
+                "url": "https://api.github.com/repos/BlakvGhost/PHPValidator/zipball/b9a8d78f698926bb360cb70208d273e26b936d16",
+                "reference": "b9a8d78f698926bb360cb70208d273e26b936d16",
                 "shasum": ""
             },
             "require": {
@@ -45,9 +45,9 @@
             "description": "PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.",
             "support": {
                 "issues": "https://github.com/BlakvGhost/PHPValidator/issues",
-                "source": "https://github.com/BlakvGhost/PHPValidator/tree/v1.1"
+                "source": "https://github.com/BlakvGhost/PHPValidator/tree/v1.1.2"
             },
-            "time": "2023-11-16T04:14:26+00:00"
+            "time": "2023-11-16T20:03:57+00:00"
         },
         {
             "name": "eftec/bladeone",
@@ -405,7 +405,7 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.3.0",
+            "version": "v3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
@@ -452,7 +452,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.3.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.4.0"
             },
             "funding": [
                 {
