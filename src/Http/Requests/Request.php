@@ -2,6 +2,7 @@
 
 namespace Floky\Http\Requests;
 
+use Floky\Facades\Validator;
 use Floky\Http\Requests\Content\Files;
 use Floky\Http\Requests\Content\Header;
 
@@ -45,6 +46,12 @@ class Request
         $result = array_filter(self::$data, fn($key) => in_array($key, $keys), ARRAY_FILTER_USE_KEY);
 
         return secure($result);
+    }
+    
+    public static function validate($rules) {
+
+        return Validator::validate(self::$data, $rules);
+    
     }
     
     public static function all(): array
