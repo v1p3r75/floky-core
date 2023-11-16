@@ -79,7 +79,7 @@ class Route
     public static function any(string $uri, $callback)
     {
 
-        return self::add($uri, self::$routes, $callback);
+        return self::add($uri, self::$verbs, $callback);
     }
 
 
