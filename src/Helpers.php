@@ -1,6 +1,7 @@
 <?php
 
 use Floky\Application;
+use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Security;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
@@ -67,11 +68,16 @@ function response()
  * @param string $name The name of the route.
  * @return string|null The URI of the named route, or `null` if the route does not exist.
  */
-function route(string $name): string | null
+function route(string $name): string | NotFoundException
 {
     $route = Route::getRouteByName($name);
     
-    return $route ? $route["uri"] : null;
+    if(!$route) {
+        
+        throw new NotFoundException("The route '$name' doesn't exist.");
+    }
+
+    return $route;
     
 }
 
