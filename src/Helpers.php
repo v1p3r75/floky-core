@@ -77,7 +77,7 @@ function route(string $name): string | NotFoundException
         throw new NotFoundException("The route '$name' doesn't exist.");
     }
 
-    return $route;
+    return $route["uri"];
     
 }
 
