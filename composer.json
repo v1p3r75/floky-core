@@ -25,7 +25,8 @@
         "blakvghost/php-validator": "^1.1"
     },
     "require-dev": {
-        "pestphp/pest": "^2.24"
+        "pestphp/pest": "^2.24",
+        "mockery/mockery": "^1.6"
     },
     "config": {
         "allow-plugins": {
