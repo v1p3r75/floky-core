@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Floky\Application;
+use Floky\Http\Requests\Request;
 
 require dirname(__DIR__) . "/vendor/autoload.php";
 
@@ -21,7 +22,8 @@ uses(TestCase::class)
     ->beforeEach(function () {
 
         $this->app = Application::getInstance(__DIR__);
-        //require dirname(__DIR__) . '/src/Helpers.php';
+        $this->request = Request::getInstance();
+
     })
     ->in('Feature');
 
