@@ -98,7 +98,7 @@ class Application
 
         $request = $this->runMiddlewares($httpKernel->getAllMiddlewares(), $this->request);
 
-        return $this->dispatch($request, $htppKernel);
+        return $this->dispatch($request, $httpKernel);
     }
 
 
