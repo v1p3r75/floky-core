@@ -133,7 +133,7 @@ if (!function_exists('config')) {
             return require $config_files[$file];
         }
 
-        return [];
+        throw new NotFoundException("'$file' file does not exist in config directory.");
     }
 }
 
