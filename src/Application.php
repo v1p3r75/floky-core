@@ -9,6 +9,7 @@ use ErrorException;
 use Exception;
 use Floky\Container\Container;
 use Floky\Exceptions\NotFoundException;
+use Floky\Facades\Security;
 use Floky\Http\Middlewares\Middlewares;
 use Floky\Http\Requests\Request;
 use Floky\Routing\Route;
@@ -22,13 +23,13 @@ class Application
 
     public Request $request;
 
-    public static string $root_dir;
+    public static ?string $root_dir;
 
     public static string $core_dir;
 
     public static ?Application $instance = null;
 
-    private function __construct(string $root_dir)
+    private function __construct(?string $root_dir = null)
     {
 
         self::$root_dir = $root_dir;
@@ -200,7 +201,7 @@ class Application
         }
 
         throw new ErrorException(
-            secure($errstr),
+            Security::secure($errstr),
             $errno,
             E_ERROR,
             $errfile,
