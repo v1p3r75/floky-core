@@ -10,6 +10,7 @@ use Exception;
 use Floky\Container\Container;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Security;
+use Floky\Http\Kernel;
 use Floky\Http\Middlewares\Middlewares;
 use Floky\Http\Requests\Request;
 use Floky\Routing\Route;
@@ -97,16 +98,16 @@ class Application
 
         $request = $this->runMiddlewares($httpKernel->getAllMiddlewares(), $this->request);
 
-        return $this->dispatch($request);
+        return $this->dispatch($request, $htppKernel);
     }
 
 
-    private function dispatch(Request $request)
+    private function dispatch(Request $request, Kernel $kernel)
     {
 
         $this->loadAppRoutes();
 
-        return Route::dispatch($request);
+        return Route::dispatch($request, $kernel);
     }
 
 

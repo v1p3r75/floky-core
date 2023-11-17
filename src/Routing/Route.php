@@ -2,11 +2,11 @@
 
 namespace Floky\Routing;
 
-use App\Http\Kernel;
 use Closure;
 use Floky\Application;
 use Floky\Exceptions\NotFoundException;
 use Floky\Exceptions\ParseErrorException;
+use Floky\Http\Kernel;
 use Floky\Http\Middlewares\Middlewares;
 use Floky\Http\Requests\Request;
 
@@ -98,7 +98,7 @@ class Route
         return new static;
     }
 
-    public static function dispatch(Request $request)
+    public static function dispatch(Request $request, Kernel $kernel)
     {
 
         $method = $request->getMethod();
@@ -136,7 +136,7 @@ class Route
 
                 if(isset($route['middlewares'])) {
 
-                    $route_middlewares = self::getMiddlewareArray($route['middlewares']);
+                    $route_middlewares = self::getMiddlewareArray($route['middlewares'], $kernel);
 
                     self::runMiddlewares($route_middlewares, $request);
 
