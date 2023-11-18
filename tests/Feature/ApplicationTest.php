@@ -25,6 +25,6 @@ it('return bladeOne instance successfully', function () {
 it('return the route dir ', function() {
 
     expect($this->app->getAppDirectory())
-        ->toBe("$this->app::$root_dir");
+        ->toBe($this->app::$root_dir);
 });
     
