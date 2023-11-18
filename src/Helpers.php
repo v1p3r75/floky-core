@@ -172,7 +172,7 @@ if(!function_exists('csrf_token')) {
         $token = Security::generateCSRFTtoken();
 
         $input = <<<HTML
-            <input type="hidden" name="csrf_token" value=<? $token ?> />
+            <input type="hidden" name="csrf_token" value=$token />
         HTML;
 
         return $input;

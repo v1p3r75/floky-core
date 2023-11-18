@@ -44,4 +44,11 @@ class Security
 
         return $token;
     }
+
+    public static function checkToken($token): bool {
+
+        
+        return isset($token) && $_SESSION['csrf_token'] === $token;
+    }
+    
 }
