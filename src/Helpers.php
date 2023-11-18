@@ -165,6 +165,19 @@ if (!function_exists('get_directory_files')) {
     }
 }
 
+if(!function_exists('csrf_token')) {
+
+    function csrf_token(): string
+    {
+        $token = Security::generateCSRFTtoken();
+
+        $input = <<<HTML
+            <input type="hidden" name="csrf_token" value=<? $token ?> />
+        HTML;
+
+        return $input;
+    }
+}
 
 if (!function_exists('validate')) {
     function validate(array $data, array $rules)

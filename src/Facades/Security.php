@@ -36,4 +36,12 @@ class Security
     
         return $data;
     }
+
+    public static function generateCSRFTtoken(): string {
+
+        $token = bin2hex(random_bytes(32));
+        $_SESSION['csrf_token'] = $token;
+
+        return $token;
+    }
 }
