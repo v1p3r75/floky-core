@@ -190,7 +190,7 @@ class Application
             }
         }
         
-        return [...$_GET, ...$_POST, ...$data];
+        return ['get' => $_GET, 'post' => $_POST, 'other' => $data];
     }
 
     public function handleError(int $errno, string $errstr, string $errfile, int $errline): bool
