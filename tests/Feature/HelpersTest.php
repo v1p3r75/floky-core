@@ -55,3 +55,14 @@ it('env helper should return a default value', function() {
     expect(env('invalid_key', 'default'))->toBe('default');
 
 });
+
+it('validates value with validate helper', function(){
+
+    $validation = validate(['email' => 'valid_email@gmail.com'], ['email' => 'email']);
+    expect($validation->isValid())->toBeTrue();
+
+    $validation = validate(['email' => 'invalid_gmail.com'], ['email' => 'email']);
+
+    expect($validation->isValid())->toBeFalse();
+
+});

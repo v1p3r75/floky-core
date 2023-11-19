@@ -20,7 +20,6 @@ require dirname(__DIR__) . "/vendor/autoload.php";
 
 uses(TestCase::class)
     -> beforeAll(function() {
-
         require dirname(__DIR__) . '/src/Helpers.php';
     })
     ->beforeEach(function () {
