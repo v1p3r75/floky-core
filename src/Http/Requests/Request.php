@@ -78,19 +78,24 @@ class Request
         return secure($data);
     }
 
-    public static function validator($rules) {
+    /**
+     * @param $rules
+     * @return \BlakvGhost\PHPValidator\Validator
+     */
+    public static function validator($rules): \BlakvGhost\PHPValidator\Validator
+    {
 
         return Validator::validate(self::$data, $rules);
     
     }
 
-    public static function validate($rules) {
+    public static function validate($rules): void {
 
         $validation = Validator::validate(self::$data, $rules);
 
         if(! $validation->isValid()) {
 
-            return self::back(['errors' => $validation->getErrors()]);
+            self::back(['errors' => $validation->getErrors()]);
         }
         
         // pass
@@ -99,8 +104,8 @@ class Request
     public static function back(mixed $data = []) {
 
         $_SESSION['data'] = $data;
-        return self::redirectTo(self::getReferer());
-        
+        self::redirectTo(self::getReferer());
+        return;
     } 
 
     public static function getUri(): string
@@ -133,7 +138,6 @@ class Request
     {
 
         header('Location: ' . $url);
-        exit;
     }
 
     public static function isMethod(string $method)
@@ -180,5 +184,12 @@ class Request
     {
 
         return Header::getInstance();
+    }
+
+    public function __get(string $key) {
+
+        $data = self::all();
+
+        return isset($data[$key]) ? secure($data[$key]) : null;
     }
 }
