@@ -36,34 +36,84 @@ class Request
 
     public static function input(string $key, $default = null): string | null
     {
+        $data = self::all();
 
-        return isset(self::$data[$key]) ? secure(self::$data[$key]) : $default;
+        return isset($data[$key]) ? secure($data[$key]) : $default;
+    }
+
+    public static function get(string $key = null, $default = null): string | array | null
+    {
+        if(! $key) {
+
+            return self::$data['get'];
+        }
+
+        return isset(self::$data['get'][$key]) ? secure(self::$data['get'][$key]) : $default;
+    }
+
+    public static function post(string $key = null, $default = null): string | array | null
+    {
+        if(! $key) {
+
+            return self::$data['post'];
+        }
+
+        return isset(self::$data['post'][$key]) ? secure(self::$data['post'][$key]) : $default;
     }
 
     public static function only(array $keys): array
     {
 
-        $result = array_filter(self::$data, fn($key) => in_array($key, $keys), ARRAY_FILTER_USE_KEY);
+        $data = self::all();
+
+        $result = array_filter($data, fn($key) => in_array($key, $keys), ARRAY_FILTER_USE_KEY);
 
         return secure($result);
     }
     
-    public static function validate($rules) {
+    public static function all(): array
+    {
+        $data = array_merge(self::$data['get'], self::$data['post'], self::$data['other']);
+
+        return secure($data);
+    }
+
+    public static function validator($rules) {
 
         return Validator::validate(self::$data, $rules);
     
     }
-    
-    public static function all(): array
-    {
 
-        return secure(self::$data);
+    public static function validate($rules) {
+
+        $validation = Validator::validate(self::$data, $rules);
+
+        if(! $validation->isValid()) {
+
+            return self::back(['errors' => $validation->getErrors()]);
+        }
+        
+        // pass
     }
 
-    public static function getUri(string $type = 'string')
+    public static function back(mixed $data = []) {
+
+        $_SESSION['data'] = $data;
+        return self::redirectTo(self::getReferer());
+        
+    } 
+
+    public static function getUri(): string
     {
 
         return secure($_SERVER['REQUEST_URI']);
+        
+    }
+
+    public static function getReferer(): string
+    {
+
+        return isset($_SERVER['HTTP_REFERER']) ? secure($_SERVER['HTTP_REFERER']) : '/';
         
     }
 
