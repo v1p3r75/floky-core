@@ -3,7 +3,7 @@
 namespace Floky\Facades;
 
 
-class Security
+class Security extends Facades
 {
     public static function check(string $password, string $hached_password): bool
     {

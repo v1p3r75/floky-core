@@ -2,10 +2,12 @@
 
 use Floky\Application;
 use Floky\Exceptions\NotFoundException;
+use Floky\Facades\Config;
 use Floky\Facades\Security;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
 use \Floky\Facades\Validator;
+use Floky\Facades\View;
 
 
 if (!function_exists('secure')) {
@@ -36,9 +38,9 @@ if (!function_exists('view')) {
     function view(string $name, $data = [])
     {
 
-        $blade = Application::getBlade();
+        $view = new View();
 
-        echo $blade->run($name, $data);
+        echo $view->render($name, $data);
     }
 }
 
@@ -54,8 +56,9 @@ if (!function_exists('view_resource')) {
     function view_resource(string $name, $data = [])
     {
 
-        $blade = Application::getBlade(true);
-        echo $blade->run($name, $data);
+        $view = new View(true);
+        echo $view->render($name, $data);
+
     }
 }
 
@@ -109,7 +112,7 @@ if (!function_exists('env')) {
     function env(string $key, string $default = null)
     {
 
-        return isset($_ENV[$key]) ? $_ENV[$key] : $default;
+        return Config::getEnv($key, $default);
     }
 }
 
@@ -125,15 +128,8 @@ if (!function_exists('config')) {
     function config(string $file)
     {
 
-        $file = $file . ".php";
-        $config_files = get_directory_files(app_config_path());
+        return Config::get($file);
 
-        if (array_key_exists($file, $config_files)) {
-
-            return require $config_files[$file];
-        }
-
-        throw new NotFoundException("'$file' file does not exist in config directory.");
     }
 }
 
