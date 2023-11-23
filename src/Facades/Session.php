@@ -35,5 +35,11 @@ class Session extends Facades
 
         return session_id($value);
     }
-    
+
+    public static function setName(string $value) {
+
+        return session_name($value);
+        
+    }
+
 }
