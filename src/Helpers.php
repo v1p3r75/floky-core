@@ -4,6 +4,7 @@ use Floky\Application;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Config;
 use Floky\Facades\Security;
+use Floky\Facades\Session;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
 use \Floky\Facades\Validator;
@@ -167,8 +168,10 @@ if(!function_exists('csrf_token')) {
     {
         $token = Security::generateCSRFTtoken();
 
+        $name = Session::TOKEN;
+
         $input = <<<HTML
-            <input type="hidden" name="csrf_token" value=$token />
+            <input type="hidden" name=$name value=$token />
         HTML;
 
         return $input;

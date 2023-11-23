@@ -41,7 +41,7 @@ class Security extends Facades
 
         $token = bin2hex(random_bytes(32));
 
-        Session::set('csrf_token', $token);
+        Session::set(Session::TOKEN, $token);
 
         return $token;
     }
@@ -49,7 +49,7 @@ class Security extends Facades
     public static function checkToken($token): bool {
 
         
-        return isset($token) && Session::get('csrf_token') === $token;
+        return isset($token) && Session::get(Session::TOKEN) === $token;
     }
     
 }
