@@ -179,13 +179,23 @@ if(!function_exists('csrf_token')) {
 }
 
 if (!function_exists('validate')) {
+
     function validate(array $data, array $rules)
     {
         return Validator::validate($data, $rules);
     }
 }
 
+if (!function_exists('session')) {
+
+    function session()
+    {
+        return new Session();
+    }
+}
+
 if (!function_exists('app_root_path')) {
+
     function app_root_path(string $path = "")
     {
 
