@@ -2,6 +2,7 @@
 
 namespace Floky\Http\Requests;
 
+use Floky\Facades\Session;
 use Floky\Facades\Validator;
 use Floky\Http\Requests\Content\Files;
 use Floky\Http\Requests\Content\Header;
@@ -103,7 +104,7 @@ class Request
 
     public static function back(mixed $data = []) {
 
-        $_SESSION['data'] = $data;
+        Session::set('data', $data);
         self::redirectTo(self::getReferer());
         return;
     } 
