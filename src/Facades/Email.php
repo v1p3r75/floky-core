@@ -19,7 +19,7 @@ class Email extends Facades
 
         $this->mail = new PHPMailer(true);
 
-        $this->config = config('mail');
+        $this->config = Config::get('mail');
 
         $this->mail->SMTPDebug = SMTP::DEBUG_OFF;                      
         $this->mail->isSMTP();                                            
