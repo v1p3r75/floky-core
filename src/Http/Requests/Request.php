@@ -86,13 +86,13 @@ class Request
     public static function validator(array $rules, array $messages = []): \BlakvGhost\PHPValidator\Validator
     {
 
-        return Validator::validate(self::$data, $rules, $messages);
+        return Validator::validate(self::all(), $rules, $messages);
     
     }
 
     public static function validate($rules, array $messages = []): void {
 
-        $validation = Validator::validate(self::$data, $rules, $messages);
+        $validation = Validator::validate(self::all(), $rules, $messages);
 
         if(! $validation->isValid()) {
 
