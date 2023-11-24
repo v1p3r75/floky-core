@@ -17,11 +17,6 @@ it('services method should return a valid Container class', function () {
         ->toBeInstanceOf(Container::class);
 });
 
-it('return bladeOne instance successfully', function () {
-
-    expect($this->app->getBlade())->toBeInstanceOf(BladeOne::class);
-});
-
 it('return the route dir ', function() {
 
     expect($this->app->getAppDirectory())

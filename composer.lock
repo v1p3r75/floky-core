@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "blakvghost/php-validator",
-            "version": "v1.2",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BlakvGhost/PHPValidator.git",
-                "reference": "d5cdf5f2946119c50f5d01f2470cc152302c8822"
+                "reference": "d57663eff17ab0dfe37c93a680d7774c779846cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BlakvGhost/PHPValidator/zipball/d5cdf5f2946119c50f5d01f2470cc152302c8822",
-                "reference": "d5cdf5f2946119c50f5d01f2470cc152302c8822",
+                "url": "https://api.github.com/repos/BlakvGhost/PHPValidator/zipball/d57663eff17ab0dfe37c93a680d7774c779846cc",
+                "reference": "d57663eff17ab0dfe37c93a680d7774c779846cc",
                 "shasum": ""
             },
             "require": {
@@ -45,9 +45,9 @@
             "description": "PHPValidator is a modern PHP library for data validation in your PHP applications. It provides a flexible and extensible way to validate data using predefined rules or by creating custom validation rules.",
             "support": {
                 "issues": "https://github.com/BlakvGhost/PHPValidator/issues",
-                "source": "https://github.com/BlakvGhost/PHPValidator/tree/v1.2"
+                "source": "https://github.com/BlakvGhost/PHPValidator/tree/v1.4.1"
             },
-            "time": "2023-11-17T18:52:45+00:00"
+            "time": "2023-11-22T15:58:04+00:00"
         },
         {
             "name": "eftec/bladeone",

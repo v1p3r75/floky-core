@@ -3,7 +3,7 @@
 namespace Floky\Facades;
 
 
-class Security
+class Security extends Facades
 {
     public static function check(string $password, string $hached_password): bool
     {
@@ -40,7 +40,8 @@ class Security
     public static function generateCSRFTtoken(): string {
 
         $token = bin2hex(random_bytes(32));
-        $_SESSION['csrf_token'] = $token;
+
+        Session::set(Session::TOKEN, $token);
 
         return $token;
     }
@@ -48,7 +49,7 @@ class Security
     public static function checkToken($token): bool {
 
         
-        return isset($token) && $_SESSION['csrf_token'] === $token;
+        return isset($token) && Session::get(Session::TOKEN) === $token;
     }
     
 }

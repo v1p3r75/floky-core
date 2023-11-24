@@ -2,10 +2,13 @@
 
 use Floky\Application;
 use Floky\Exceptions\NotFoundException;
+use Floky\Facades\Config;
 use Floky\Facades\Security;
+use Floky\Facades\Session;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
 use \Floky\Facades\Validator;
+use Floky\Facades\View;
 
 
 if (!function_exists('secure')) {
@@ -36,9 +39,9 @@ if (!function_exists('view')) {
     function view(string $name, $data = [])
     {
 
-        $blade = Application::getBlade();
+        $view = new View();
 
-        echo $blade->run($name, $data);
+        echo $view->render($name, $data);
     }
 }
 
@@ -54,8 +57,9 @@ if (!function_exists('view_resource')) {
     function view_resource(string $name, $data = [])
     {
 
-        $blade = Application::getBlade(true);
-        echo $blade->run($name, $data);
+        $view = new View(true);
+        echo $view->render($name, $data);
+
     }
 }
 
@@ -109,7 +113,7 @@ if (!function_exists('env')) {
     function env(string $key, string $default = null)
     {
 
-        return isset($_ENV[$key]) ? $_ENV[$key] : $default;
+        return Config::getEnv($key, $default);
     }
 }
 
@@ -125,15 +129,8 @@ if (!function_exists('config')) {
     function config(string $file)
     {
 
-        $file = $file . ".php";
-        $config_files = get_directory_files(app_config_path());
+        return Config::get($file);
 
-        if (array_key_exists($file, $config_files)) {
-
-            return require $config_files[$file];
-        }
-
-        throw new NotFoundException("'$file' file does not exist in config directory.");
     }
 }
 
@@ -171,8 +168,10 @@ if(!function_exists('csrf_token')) {
     {
         $token = Security::generateCSRFTtoken();
 
+        $name = Session::TOKEN;
+
         $input = <<<HTML
-            <input type="hidden" name="csrf_token" value=$token />
+            <input type="hidden" name=$name value=$token />
         HTML;
 
         return $input;
@@ -180,13 +179,23 @@ if(!function_exists('csrf_token')) {
 }
 
 if (!function_exists('validate')) {
-    function validate(array $data, array $rules)
+
+    function validate(array $data, array $rules, array $messages = [])
     {
-        return Validator::validate($data, $rules);
+        return Validator::validate($data, $rules, $messages);
+    }
+}
+
+if (!function_exists('session')) {
+
+    function session()
+    {
+        return new Session();
     }
 }
 
 if (!function_exists('app_root_path')) {
+
     function app_root_path(string $path = "")
     {
 

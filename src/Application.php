@@ -2,13 +2,12 @@
 
 namespace Floky;
 
-use Dotenv\Dotenv;
-use eftec\bladeone\BladeOne;
 use Error;
 use ErrorException;
 use Exception;
 use Floky\Container\Container;
 use Floky\Exceptions\NotFoundException;
+use Floky\Facades\Config;
 use Floky\Facades\Security;
 use Floky\Http\Kernel;
 use Floky\Http\Middlewares\Middlewares;
@@ -39,8 +38,7 @@ class Application
         set_exception_handler([$this, 'handleException']);
         set_error_handler([$this, 'handleError']);
 
-        $dotenv = Dotenv::createImmutable(dirname(self::$root_dir));
-        $dotenv->safeLoad();
+        Config::loadEnv(dirname(self::$root_dir));
 
         $this->request = Request::getInstance();
         $this->container = Container::getInstance();
@@ -159,16 +157,6 @@ class Application
     {
 
         return self::$root_dir;
-    }
-
-    public static function getBlade(bool $isResource = false): BladeOne
-    {
-
-        $path = $isResource ? app_storage_path("framework") : app_view_path();
-
-        $blade = new BladeOne($path, app_cache_path(), BladeOne::MODE_DEBUG); // MODE_DEBUG allows to pinpoint troubles.
-
-        return $blade;
     }
 
     private function collectRequestData(): array

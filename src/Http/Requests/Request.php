@@ -2,6 +2,7 @@
 
 namespace Floky\Http\Requests;
 
+use Floky\Facades\Session;
 use Floky\Facades\Validator;
 use Floky\Http\Requests\Content\Files;
 use Floky\Http\Requests\Content\Header;
@@ -82,16 +83,16 @@ class Request
      * @param $rules
      * @return \BlakvGhost\PHPValidator\Validator
      */
-    public static function validator($rules): \BlakvGhost\PHPValidator\Validator
+    public static function validator(array $rules, array $messages = []): \BlakvGhost\PHPValidator\Validator
     {
 
-        return Validator::validate(self::$data, $rules);
+        return Validator::validate(self::$data, $rules, $messages);
     
     }
 
-    public static function validate($rules): void {
+    public static function validate($rules, array $messages = []): void {
 
-        $validation = Validator::validate(self::$data, $rules);
+        $validation = Validator::validate(self::$data, $rules, $messages);
 
         if(! $validation->isValid()) {
 
@@ -103,7 +104,7 @@ class Request
 
     public static function back(mixed $data = []) {
 
-        $_SESSION['data'] = $data;
+        Session::set('data', $data);
         self::redirectTo(self::getReferer());
         return;
     } 
