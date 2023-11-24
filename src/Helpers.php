@@ -180,9 +180,9 @@ if(!function_exists('csrf_token')) {
 
 if (!function_exists('validate')) {
 
-    function validate(array $data, array $rules)
+    function validate(array $data, array $rules, array $messages = [])
     {
-        return Validator::validate($data, $rules);
+        return Validator::validate($data, $rules, $messages);
     }
 }
 
