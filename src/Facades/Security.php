@@ -24,17 +24,12 @@ class Security extends Facades
     {
         if (is_array($data)) {
 
-            foreach ($data as $key => $value) {
-                
-                $data[$key] = secure($value);
-            }
+            return array_map(fn($value) => self::secure($value), $data);
     
-        } else {
-    
-            $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
         }
+
+        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
     
-        return $data;
     }
 
     public static function generateCSRFTtoken(): string {

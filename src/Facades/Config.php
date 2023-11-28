@@ -12,11 +12,23 @@ class Config extends Facades
     public static function get(string $file)
     {
 
-        $file = $file . ".php";
+        $path = explode('.', $file);
+        $file = $path[0] . ".php";
+        $params = array_slice($path, 1);
         $config_files = get_directory_files(app_config_path());
 
         if (array_key_exists($file, $config_files)) {
 
+            if(!empty($params)) {
+
+                $config = require $config_files[$file];
+
+                foreach($params as $param)
+                    $config = $config[$param];
+
+                return $config;
+            }
+            
             return require $config_files[$file];
         }
 
