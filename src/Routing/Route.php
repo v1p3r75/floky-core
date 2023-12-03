@@ -89,7 +89,7 @@ class Route
 
         if (!self::methodIsCorrect($method)) {
 
-            throw new ParseErrorException("Route does not support " . implode(",", $method) . " method");
+            throw new ParseErrorException("Route does not support " . implode(",", $method) . " method", Code::UNKNOW_METHOD);
         }
 
         $uri = self::format_uri($uri);
@@ -125,7 +125,7 @@ class Route
 
                 if (!in_array($method, $route_methods)) { // Bad route method
 
-                    throw new ParseErrorException("The '" . $route['uri']. "' route does not support the '$method' method but: " . implode(",", $route_methods) );
+                    throw new ParseErrorException("The '" . $route['uri']. "' route does not support the '$method' method but: " . implode(",", $route_methods), Code::BAD_METHOD);
                 }
 
                 $params = [];
@@ -190,7 +190,7 @@ class Route
             if(isset($route["name"]) && $route["name"] == $name) {
 
                 $found = $route['uri'] == "" ? '/' : $route['uri'];
-                throw new ParseErrorException("'$name' is already used by '$found'" );
+                throw new ParseErrorException("'$name' is already used by '$found'", Code::ROUTE_ALREADY_EXIST);
             }
         }
 

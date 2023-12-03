@@ -13,4 +13,13 @@ class Code
 
     const MIDDLEWARE_NOT_FOUND = 4006;
 
+
+    const UNKNOW_METHOD = 4050;
+
+    const BAD_METHOD = 4051;
+
+    const ROUTE_ALREADY_EXIST = 4052;
+    
+
+    const DATA_VALIDATION = 4070;
 }
