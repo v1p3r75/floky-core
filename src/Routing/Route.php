@@ -4,6 +4,7 @@ namespace Floky\Routing;
 
 use Closure;
 use Floky\Application;
+use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Exceptions\ParseErrorException;
 use Floky\Http\Kernel;
@@ -147,7 +148,7 @@ class Route
             }
         }
 
-        throw new NotFoundException('Page Not found', 404);
+        throw new NotFoundException('Page Not found', Code::PAGE_NOT_FOUND);
     }
 
     public static function runCallback(array | Closure | callable $callback, array $params = []) {

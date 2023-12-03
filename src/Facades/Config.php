@@ -3,6 +3,7 @@
 namespace Floky\Facades;
 
 use Dotenv\Dotenv;
+use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 
 class Config extends Facades
@@ -32,7 +33,7 @@ class Config extends Facades
             return require $config_files[$file];
         }
 
-        throw new NotFoundException("'$file' file does not exist in config directory.");
+        throw new NotFoundException("'$file' file does not exist in config directory.", Code::FILE_NOT_FOUND);
     }
 
 

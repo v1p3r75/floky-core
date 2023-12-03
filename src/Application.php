@@ -6,6 +6,7 @@ use Error;
 use ErrorException;
 use Exception;
 use Floky\Container\Container;
+use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Config;
 use Floky\Facades\Security;
@@ -149,7 +150,8 @@ class Application
 
                 require_once $group_file;
 
-            } else throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in ". app_routes_path());
+            } else
+                throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in ". app_routes_path(), Code::FILE_NOT_FOUND);
         }
     }
 
