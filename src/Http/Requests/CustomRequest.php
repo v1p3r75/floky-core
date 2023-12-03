@@ -12,16 +12,17 @@ abstract class CustomRequest extends Request
 
         $validation = Validator::validate($request->all(), $this->rules(), $this->messages());
 
-        if (!$this->autorize($request)) {
+        if (!$this->autorize($request) || !$validation->isValid()) {
 
             throw new \Exception("Authorization failed", 401);
         }
 
-        if (!$validation->isValid()) {
+        //TODO: return errors
+        // if (!$validation->isValid()) {
 
-            dd($validation->getErrors());
-            //$request->back($validation->getErrors());
-        }
+        //     $validation->getErrors();
+        //     //$request->back($validation->getErrors());
+        // }
     }
 
     abstract protected function autorize(Request $request): bool;
