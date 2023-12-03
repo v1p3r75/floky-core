@@ -4,7 +4,7 @@ namespace Floky\Http\Requests;
 
 use Floky\Facades\Validator;
 
-abstract class CustomRequest
+abstract class CustomRequest extends Request
 {
 
     public function __construct(Request $request)
@@ -33,4 +33,5 @@ abstract class CustomRequest
 
         return [];
     }
+
 }
