@@ -167,7 +167,7 @@ if(!function_exists('csrf_token')) {
 
     function csrf_token(): string
     {
-        $token = Security::generateCSRFTtoken();
+        $token = Security::generateCSRFToken();
 
         $name = Session::TOKEN;
 
