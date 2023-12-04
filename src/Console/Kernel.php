@@ -6,4 +6,5 @@ return [
     Floky\Console\Commands\MakeMiddleware::class,
     Floky\Console\Commands\MakeRequest::class,
     Floky\Console\Commands\MakeService::class,
+    Floky\Console\Commands\MakeCommand::class,
 ];
