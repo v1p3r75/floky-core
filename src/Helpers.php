@@ -147,19 +147,7 @@ if (!function_exists('get_directory_files')) {
     function get_directory_files(string $dir): array
     {
 
-        $files = [];
-        $content = scandir($dir);
-
-        if ($content) {
-            foreach ($content as $value) {
-                $path = $dir . $value;
-                if (is_file($path)) {
-                    $files[$value] = $path;
-                }
-            }
-        }
-
-        return $files;
+        return Config::getDirectoryFiles($dir);
     }
 }
 
@@ -219,11 +207,59 @@ if (!function_exists('app_http_path')) {
         return app_path("Http/$path");
     }
 }
+if (!function_exists('app_controllers_path')) {
+    function app_controllers_path(string $path = "")
+    {
+
+        return app_http_path("Controllers/$path");
+    }
+}
+
+if (!function_exists('app_models_path')) {
+    function app_models_path(string $path = "")
+    {
+
+        return app_http_path("Models/$path");
+    }
+}
+
+if (!function_exists('app_requests_path')) {
+    function app_requests_path(string $path = "")
+    {
+
+        return app_http_path("Requests/$path");
+    }
+}
+
+if (!function_exists('app_responses_path')) {
+    function app_responses_path(string $path = "")
+    {
+
+        return app_http_path("Responses/$path");
+    }
+}
+
+if (!function_exists('app_middlewares_path')) {
+    function app_middlewares_path(string $path = "")
+    {
+
+        return app_http_path("Middlewares/$path");
+    }
+}
+
 if (!function_exists('app_services_path')) {
     function app_services_path(string $path = "")
     {
 
         return app_path("Services/$path");
+    }
+}
+
+if (!function_exists('app_console_path')) {
+    function app_console_path(string $path = "")
+    {
+
+        return app_path("/Console/$path");
     }
 }
 

@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Http\Middlewares;
+use Floky\Http\Middlewares\MiddlewareInterface;
+use Floky\Http\Requests\Request;
+
+class {{name}} implements MiddlewareInterface
+{
+    public function handle(Request $request): Request {
+
+        return $request;
+    }
+}

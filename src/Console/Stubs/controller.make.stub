@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Floky\Http\Controllers\Controller;
+
+class {{name}} extends Controller
+{
+
+
+}
