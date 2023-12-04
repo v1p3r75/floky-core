@@ -32,7 +32,7 @@ class Security extends Facades
     
     }
 
-    public static function generateCSRFTtoken(): string {
+    public static function generateCSRFToken(): string {
 
         $token = bin2hex(random_bytes(32));
 

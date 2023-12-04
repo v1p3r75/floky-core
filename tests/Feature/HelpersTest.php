@@ -1,5 +1,6 @@
 <?php
 
+use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
@@ -40,7 +41,7 @@ it("route helper should throw a NotFoundException", function() {
 
     route('invalid_route');
 
-})->throws(NotFoundException::class);
+})->throws(exception: NotFoundException::class, exceptionCode: Code::ROUTE_NOT_FOUND);
 
 it('env helper should return a valid value', function() {
 

@@ -6,6 +6,7 @@ use Error;
 use ErrorException;
 use Exception;
 use Floky\Container\Container;
+use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Config;
 use Floky\Facades\Security;
@@ -13,6 +14,7 @@ use Floky\Http\Kernel;
 use Floky\Http\Middlewares\Middlewares;
 use Floky\Http\Requests\Request;
 use Floky\Routing\Route;
+use Highlight\Highlighter;
 
 class Application
 {
@@ -22,6 +24,8 @@ class Application
     public Container $container;
 
     public Request $request;
+
+    private Highlighter $hl;
 
     public static ?string $root_dir;
 
@@ -40,6 +44,7 @@ class Application
 
         Config::loadEnv(dirname(self::$root_dir));
 
+        $this->hl = new Highlighter;
         $this->request = Request::getInstance();
         $this->container = Container::getInstance();
 
@@ -149,7 +154,8 @@ class Application
 
                 require_once $group_file;
 
-            } else throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in ". app_routes_path());
+            } else
+                throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in ". app_routes_path(), Code::FILE_NOT_FOUND);
         }
     }
 
@@ -202,29 +208,37 @@ class Application
     public function handleException(Exception | Error $err)
     {
 
-        if ($err->getCode() === 404) {
-
-            return view_resource('templates.404');
-        }
-
-        $traces = $this->getCodePreview($err->getTrace());
-
         $data = [
             'name' => $err::class,
             'file' => $err->getFile(),
             'line' => $err->getLine(),
             'message' => $err->getMessage(),
             'code' => $err->getCode(),
-            'previews' => $traces,
+            'previews' => $err->getTrace(),
         ];
 
-        view_resource('templates.errors', $data);
+        if ($this->request->header()->acceptJson()) { // for api mode
+
+            return response()->json($data);
+        }
+
+        //TODO: return xml response
+
+        $data['previews'] = $this->getCodePreview($err->getTrace());
+
+        $template = match($err->getCode()) {
+
+            Code::PAGE_NOT_FOUND => 'templates.404',
+
+            default => 'templates.errors',
+        };
+
+        return view_resource($template, $data);
+
     }
 
     private function getCodePreview(array $traceback)
     {
-
-        $hl = new \Highlight\Highlighter();
 
         $traces = [];
 
@@ -232,7 +246,7 @@ class Application
 
             if ($code = $this->getPreview($trace)) {
 
-                $content = $hl->highlight('php', $code);
+                $content = $this->hl->highlight('php', $code);
                 $content->filename = $trace['file'];
 
                 $traces[] = $content;

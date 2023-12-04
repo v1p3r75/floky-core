@@ -4,6 +4,8 @@ namespace Floky\Facades;
 
 use eftec\bladeone\BladeOne;
 use Exception;
+use Floky\Exceptions\Code;
+use Floky\Exceptions\NotFoundException;
 
 class View extends Facades
 {
@@ -19,11 +21,21 @@ class View extends Facades
    }
 
     /**
-     * @throws Exception
+     * Render a view
+     * @param string $view
+     * @param array $data
+     * @throws NotFoundException
      */
     public function render(string $view, array $data = []): string
     {
 
-        return $this->engine->run($view, $data);
+        try {
+            
+            return $this->engine->run($view, $data);
+
+        } catch(Exception $e) {
+
+            throw new NotFoundException($e->getMessage(), Code::FILE_NOT_FOUND);
+        }
     }
 }

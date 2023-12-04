@@ -1,6 +1,7 @@
 <?php
 
 use Floky\Application;
+use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Config;
 use Floky\Facades\Security;
@@ -93,7 +94,7 @@ if (!function_exists('route')) {
 
         if (!$route) {
 
-            throw new NotFoundException("The route '$name' doesn't exist.");
+            throw new NotFoundException("The route '$name' doesn't exist.", Code::ROUTE_NOT_FOUND);
         }
 
         return $route["uri"];
@@ -166,7 +167,7 @@ if(!function_exists('csrf_token')) {
 
     function csrf_token(): string
     {
-        $token = Security::generateCSRFTtoken();
+        $token = Security::generateCSRFToken();
 
         $name = Session::TOKEN;
 

@@ -3,6 +3,7 @@
 namespace Floky\Http;
 
 use Floky\Application;
+use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Http\Requests\Request;
 use Floky\Http\Responses\Response;
@@ -41,7 +42,7 @@ class Kernel
 
         if (! isset($this->middlewaresAlias[$name])) {
 
-            throw new NotFoundException("'$name' Middleware was not found !");
+            throw new NotFoundException("'$name' Middleware was not found !", Code::MIDDLEWARE_NOT_FOUND);
         }
 
         return $this->middlewaresAlias[$name];
@@ -52,7 +53,7 @@ class Kernel
 
         if (! isset($this->middlewaresByRoute[$routeGroupName])) {
 
-            throw new NotFoundException("'$routeGroupName' does not exist");
+            throw new NotFoundException("'$routeGroupName' does not exist", Code::ROUTE_NOT_FOUND);
         }
 
         return $this->middlewaresByRoute[$routeGroupName];
