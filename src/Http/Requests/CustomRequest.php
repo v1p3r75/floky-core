@@ -2,6 +2,7 @@
 
 namespace Floky\Http\Requests;
 
+use Floky\Exceptions\UnAuthorizedException;
 use Floky\Facades\Validator;
 
 abstract class CustomRequest extends Request
@@ -14,7 +15,7 @@ abstract class CustomRequest extends Request
 
         if (!$this->autorize($request) || !$validation->isValid()) {
 
-            throw new \Exception("Authorization failed", 401);
+            throw new UnAuthorizedException('You are not authorized to access this page');
         }
 
         //TODO: return errors
