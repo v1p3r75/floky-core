@@ -39,28 +39,31 @@ class Application
 
     public static ?Application $instance = null;
 
-    private function __construct(?string $root_dir = null)
+    private function __construct(?string $root_dir = null, bool $isConsole = false)
     {
 
         self::$root_dir = $root_dir;
         self::$core_dir = __DIR__;
 
-        set_exception_handler([$this, 'handleException']);
-        set_error_handler([$this, 'handleError']);
+        if (! $isConsole) {
 
-        Config::loadEnv(dirname(self::$root_dir));
-
-        $this->hl = new Highlighter;
-        $this->request = Request::getInstance();
-        $this->container = Container::getInstance();
+            set_exception_handler([$this, 'handleException']);
+            set_error_handler([$this, 'handleError']);
+    
+            Config::loadEnv(dirname(self::$root_dir));
+    
+            $this->hl = new Highlighter;
+            $this->request = Request::getInstance();
+            $this->container = Container::getInstance();
+        }
     }
 
-    public static function getInstance(?string $root_dir = null)
+    public static function getInstance(?string $root_dir = null, bool $isConsole = false)
     {
 
         if (!self::$instance) {
 
-            self::$instance = new self($root_dir);
+            self::$instance = new self($root_dir, $isConsole);
         }
 
         return self::$instance;

@@ -16,7 +16,7 @@ class Config extends Facades
         $path = explode('.', $file);
         $file = $path[0] . ".php";
         $params = array_slice($path, 1);
-        $config_files = get_directory_files(app_config_path());
+        $config_files = self::getDirectoryFiles(app_config_path());
 
         if (array_key_exists($file, $config_files)) {
 
@@ -50,5 +50,23 @@ class Config extends Facades
         $dotenv->safeLoad();
 
         return true;
+    }
+
+    public static function getDirectoryFiles(string $dir): array
+    {
+
+        $files = [];
+        $content = scandir($dir);
+
+        if ($content) {
+            foreach ($content as $value) {
+                $path = $dir . $value;
+                if (is_file($path)) {
+                    $files[$value] = $path;
+                }
+            }
+        }
+
+        return $files;
     }
 }
