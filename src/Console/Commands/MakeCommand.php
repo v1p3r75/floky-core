@@ -22,7 +22,7 @@ class MakeCommand extends Command
         ->addArgument('name', InputArgument::REQUIRED, 'The name of the command');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $name = $input->getArgument('name');        

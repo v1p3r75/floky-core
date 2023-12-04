@@ -22,7 +22,7 @@ class MakeRequest extends Command
         ->addArgument('name', InputArgument::REQUIRED, 'The name of the custom request');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
         $name = $input->getArgument('name');        

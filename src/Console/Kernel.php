@@ -1,6 +1,8 @@
 <?php
 
 return [
+    
+    Floky\Console\Commands\StartApplication::class,
 
     Floky\Console\Commands\MakeController::class,
     Floky\Console\Commands\MakeMiddleware::class,
