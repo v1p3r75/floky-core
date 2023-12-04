@@ -1,6 +1,7 @@
 <?php
 
 use Floky\Application;
+use Floky\Collections\Collection;
 use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Config;
@@ -182,6 +183,15 @@ if (!function_exists('session')) {
         return new Session();
     }
 }
+
+if (!function_exists('collect')) {
+
+    function collect(array $items)
+    {
+        return new Collection($items);
+    }
+}
+
 
 if (!function_exists('app_root_path')) {
 
