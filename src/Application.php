@@ -219,6 +219,7 @@ class Application
         $template = match ($err->getCode()) {
 
             Code::PAGE_NOT_FOUND => 'templates.404',
+            Code::UNAUTHORIZED => 'templates.401',
 
             default => 'templates.errors',
         };
