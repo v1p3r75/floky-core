@@ -7,7 +7,7 @@ use Floky\Http\Resources\Resource;
 class {{name}} extends Resource 
 {
 
-    protected function toArray(): array
+    public function get(): array
     {
 
         return [
