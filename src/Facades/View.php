@@ -17,6 +17,9 @@ class View extends Facades
         $path = $isForFrameworkView ? app_storage_path("framework") : app_view_path();
 
         $this->engine = new BladeOne($path, app_cache_path(), BladeOne::MODE_DEBUG); // MODE_DEBUG allows to pinpoint troubles.
+        
+        if ($isForFrameworkView)
+            $this->engine->setFileExtension('.template.php');
 
    }
 
