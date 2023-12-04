@@ -93,7 +93,7 @@ class Collection implements Countable, ArrayAccess
     {
         return array_keys($this->items);
     }
-    
+
     public function isEmpty(): bool
     {
         return empty($this->items);
