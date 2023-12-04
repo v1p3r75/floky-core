@@ -22,4 +22,8 @@ class Code
     
 
     const DATA_VALIDATION = 4070;
+
+
+    const UNAUTHORIZED = 401;
+    
 }

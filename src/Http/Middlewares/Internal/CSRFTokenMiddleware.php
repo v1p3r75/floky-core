@@ -3,7 +3,7 @@
 namespace Floky\Http\Middlewares\Internal;
 
 use Exception;
-use Floky\Facades\Config;
+use Floky\Exceptions\UnAuthorizedException;
 use Floky\Facades\Security;
 use Floky\Facades\Session;
 use Floky\Http\Middlewares\MiddlewareInterface;
@@ -20,8 +20,7 @@ class CSRFTokenMiddleware implements MiddlewareInterface
 
             if (! Security::checkToken($request->input(Session::TOKEN))) {
     
-                // TODO: render a 401 template instead of throw exception
-               throw new Exception('Invalid CSRF token', 401);
+               throw new UnAuthorizedException('Invalid CSRF token');
            }
         }
 

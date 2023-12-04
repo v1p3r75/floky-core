@@ -53,7 +53,6 @@ class Application
         $this->hl = new Highlighter;
         $this->request = Request::getInstance();
         $this->container = Container::getInstance();
-
     }
 
     public static function getInstance(?string $root_dir = null)
@@ -159,9 +158,8 @@ class Application
             if (file_exists($group_file)) {
 
                 require_once $group_file;
-
             } else
-                throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in ". app_routes_path(), Code::FILE_NOT_FOUND);
+                throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in " . app_routes_path(), Code::FILE_NOT_FOUND);
         }
     }
 
@@ -175,7 +173,7 @@ class Application
     {
 
         $specialMethods = ['PUT', 'PATCH', 'DELETE'];
-        
+
         $data = []; // for specials methods
 
         if (in_array($this->request->getMethod(), $specialMethods)) {
@@ -189,7 +187,7 @@ class Application
                 parse_str($requestContent, $data);
             }
         }
-        
+
         return ['get' => $_GET, 'post' => $_POST, 'other' => $data];
     }
 
@@ -214,16 +212,30 @@ class Application
     public function handleException(Exception | Error $err)
     {
 
+        $exceptsInProduction = [Code::PAGE_NOT_FOUND, Code::UNAUTHORIZED];
+
         $currentEnv = Config::get('app.environment') ?? Application::PRODUCTION;
 
-        if($currentEnv == Application::PRODUCTION) {
-            
-            if ($this->request->header()->acceptJson()) { // for api mode
+        $template = match ($err->getCode()) {
 
-                return response()->json(['error' => 'An error has occurred in the application. Please contact the administrator']);
+            Code::PAGE_NOT_FOUND => 'templates.404',
+
+            default => 'templates.errors',
+        };
+
+        if ($currentEnv == Application::PRODUCTION) {
+
+            if (!in_array($err->getCode(), $exceptsInProduction)) {
+
+                if ($this->request->header()->acceptJson()) { // for api mode
+
+                    return response()->json(['error' => 'An error has occurred in the application. Please contact the administrator']);
+                }
+
+                return view_resource('templates.production');
             }
 
-            return view_resource('templates.production');
+            return view_resource($template);
         }
 
         $data = [
@@ -244,15 +256,7 @@ class Application
 
         $data['previews'] = $this->getCodePreview($err->getTrace());
 
-        $template = match($err->getCode()) {
-
-            Code::PAGE_NOT_FOUND => 'templates.404',
-
-            default => 'templates.errors',
-        };
-
         return view_resource($template, $data);
-
     }
 
     private function getCodePreview(array $traceback)
