@@ -227,6 +227,14 @@ if (!function_exists('app_services_path')) {
     }
 }
 
+if (!function_exists('app_console_path')) {
+    function app_console_path(string $path = "")
+    {
+
+        return app_path("/Console/$path");
+    }
+}
+
 if (!function_exists('app_view_path')) {
     function app_view_path(string $path = "")
     {
