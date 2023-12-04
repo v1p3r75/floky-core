@@ -12,7 +12,7 @@ it('should return a valid resource value', function () {
     ];
 
     $resource = new ObjectResource($objectTest);
-    $result = $resource->toArray($this->request);
+    $result = $resource->get();
     expect($result)->toBe([
         'first' => $objectTest['key1'],
         'second' => $objectTest['key2'],
