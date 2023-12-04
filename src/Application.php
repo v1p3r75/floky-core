@@ -21,6 +21,12 @@ class Application
 
     use Middlewares;
 
+    const PRODUCTION = 'production';
+
+    const DEVELOPMENT = 'development';
+
+    const DOWN = 'down';
+
     public Container $container;
 
     public Request $request;
@@ -207,6 +213,18 @@ class Application
 
     public function handleException(Exception | Error $err)
     {
+
+        $currentEnv = Config::get('app.environment') ?? Application::PRODUCTION;
+
+        if($currentEnv == Application::PRODUCTION) {
+            
+            if ($this->request->header()->acceptJson()) { // for api mode
+
+                return response()->json(['error' => 'An error has occurred in the application. Please contact the administrator']);
+            }
+
+            return view_resource('templates.production');
+        }
 
         $data = [
             'name' => $err::class,
