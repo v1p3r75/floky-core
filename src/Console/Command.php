@@ -5,6 +5,7 @@ namespace Floky\Console;
 use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Output\Output;
 
 class Command extends SymfonyCommand 
 {
@@ -27,5 +28,30 @@ class Command extends SymfonyCommand
         }
 
         return $stub;
+    }
+
+    public function make(
+        Output $output, string $name,
+        string $file, string $stub,
+        ?array $options = null
+    ): int
+    {
+
+        $stub = $this->getStub($stub, $options ?? ['name' => $name]);
+
+        if( file_exists($file)) {
+
+            $output->writeln("<error>This File already exists</error>");
+            return Command::FAILURE;
+        }
+
+        if (! file_put_contents($file, $stub)) {
+
+            $output->writeln("<error>An error occurred while creating the file</error>");
+            return Command::FAILURE;
+        }
+
+        $output->writeln("<info> Filed created : [$file]</info>");
+        return Command::SUCCESS;
     }
 }

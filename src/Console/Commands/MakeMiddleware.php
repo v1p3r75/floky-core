@@ -27,21 +27,8 @@ class MakeMiddleware extends Command
 
         $name = $input->getArgument('name');        
         $path = app_middlewares_path( $name . '.php');
-        $stub = $this->getStub('middleware.make', ['name' => $name]);
 
-        if( file_exists($path)) {
+        return $this->make($output, $name, $path, 'middleware.make');
 
-            $output->writeln("<error>This File already exists</error>");
-            return Command::FAILURE;
-        }
-
-        if (! file_put_contents($path, $stub)) {
-
-            $output->writeln("<error>An error occurred while creating the file</error>");
-            return Command::FAILURE;
-        }
-
-        $output->writeln("<info> Filed created : [$path]</info>");
-        return Command::SUCCESS;
     }
 }
