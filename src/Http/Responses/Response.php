@@ -15,7 +15,7 @@ class Response
 
         header('Content-Type: application/json');
         echo json_encode($data);
-        return true;
+        return new static;
     }
 
     /**
@@ -28,7 +28,7 @@ class Response
 
         http_response_code($statusCode);
         echo $content;
-        return true;
+        return new static;
     }
 
     /**
@@ -40,7 +40,7 @@ class Response
     {
 
         header('Location: ' . $url, true, $statusCode);
-        return true;
+        return new static;
     }
 
     /**
@@ -54,6 +54,6 @@ class Response
         header('Content-Type: text/plain');
         http_response_code($statusCode);
         echo $text;
-        return true;
+        return new static;
     }
 }
