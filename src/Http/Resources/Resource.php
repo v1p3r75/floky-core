@@ -9,9 +9,10 @@ abstract class Resource
 
     public function __construct(protected mixed $resource) {
 
+        $this->toArray();
     }
 
-    abstract protected function toArray(Request $request): array;
+    abstract protected function toArray(): array;
 
     public function __get($name)
     {        

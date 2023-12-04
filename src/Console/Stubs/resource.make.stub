@@ -4,12 +4,10 @@ namespace App\Http\Resources;
 
 use Floky\Http\Resources\Resource;
 
-use Floky\Http\Requests\Request;
-
 class {{name}} extends Resource 
 {
 
-    protected function toArray(Request $request): array
+    protected function toArray(): array
     {
 
         return [
