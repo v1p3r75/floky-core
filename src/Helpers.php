@@ -247,6 +247,14 @@ if (!function_exists('app_middlewares_path')) {
     }
 }
 
+if (!function_exists('app_resources_path')) {
+    function app_resources_path(string $path = "")
+    {
+
+        return app_http_path("Resources/$path");
+    }
+}
+
 if (!function_exists('app_services_path')) {
     function app_services_path(string $path = "")
     {
@@ -268,14 +276,6 @@ if (!function_exists('app_view_path')) {
     {
 
         return app_root_path("/views/$path");
-    }
-}
-
-if (!function_exists('app_resources_path')) {
-    function app_resources_path(string $path = "")
-    {
-
-        return app_root_path("/resources/$path");
     }
 }
 

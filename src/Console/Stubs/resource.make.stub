@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Floky\Http\Resources\Resource;
+
+class {{name}} extends Resource 
+{
+
+    protected function toArray(): array
+    {
+
+        return [
+
+        ];
+    }
+
+}
