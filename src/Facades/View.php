@@ -19,7 +19,7 @@ class View extends Facades
         $this->engine = new BladeOne($path, app_cache_path(), BladeOne::MODE_DEBUG); // MODE_DEBUG allows to pinpoint troubles.
         
         if ($isForFrameworkView)
-            $this->engine->setFileExtension('.template.php');
+            $this->engine->setFileExtension('.php');
 
    }
 
