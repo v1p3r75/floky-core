@@ -9,25 +9,25 @@ use \Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'make:controller',
-    description: 'Create a new controller',
+    name: 'make:service',
+    description: 'Create a new service',
 )]
-class MakeController extends Command
+class MakeService extends Command
 {
 
     protected function configure()
     {
 
         $this
-        ->addArgument('name', InputArgument::REQUIRED, 'The name of the controller');
+        ->addArgument('name', InputArgument::REQUIRED, 'The name of the service');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         $name = $input->getArgument('name');        
-        $path = app_controllers_path( $name . '.php');
-        $stub = $this->getStub('controller.make', ['name' => $name]);
+        $path = app_services_path( $name . '.php');
+        $stub = $this->getStub('service.make', ['name' => $name]);
 
         if( file_exists($path)) {
 

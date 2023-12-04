@@ -207,11 +207,11 @@ if (!function_exists('app_http_path')) {
         return app_path("Http/$path");
     }
 }
-if (!function_exists('app_controller_path')) {
-    function app_controller_path(string $path = "")
+if (!function_exists('app_controllers_path')) {
+    function app_controllers_path(string $path = "")
     {
 
-        return app_http_path("Controller/$path");
+        return app_http_path("Controllers/$path");
     }
 }
 

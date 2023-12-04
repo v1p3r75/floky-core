@@ -26,7 +26,7 @@ class MakeRequest extends Command
     {
 
         $name = $input->getArgument('name');        
-        $path = app_middlewares_path( $name . '.php');
+        $path = app_requests_path( $name . '.php');
         $stub = $this->getStub('request.make', ['name' => $name]);
 
         if( file_exists($path)) {
