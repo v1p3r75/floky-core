@@ -25,5 +25,7 @@ class Code
 
 
     const UNAUTHORIZED = 401;
+
+    const APP_DOWN = 5000;
     
 }

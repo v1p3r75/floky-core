@@ -212,7 +212,7 @@ class Application
     public function handleException(Exception | Error $err)
     {
 
-        $exceptsInProduction = [Code::PAGE_NOT_FOUND, Code::UNAUTHORIZED];
+        $exceptsInProduction = [Code::PAGE_NOT_FOUND, Code::UNAUTHORIZED, Code::APP_DOWN ];
 
         $currentEnv = Config::get('app.environment') ?? Application::PRODUCTION;
 
@@ -220,6 +220,7 @@ class Application
 
             Code::PAGE_NOT_FOUND => 'templates.404',
             Code::UNAUTHORIZED => 'templates.401',
+            Code::APP_DOWN => 'templates.maintenance',
 
             default => 'templates.errors',
         };
