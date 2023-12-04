@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Floky\Http\Requests\CustomRequest;
+use Floky\Http\Requests\Request;
+
+class {{name}} extends CustomRequest
+{
+
+    protected function autorize(Request $request): bool
+    {
+
+        return true;
+    }
+
+    protected function rules(): array
+    {
+        return [
+
+            // write your validation rules here
+        ];
+    }
+
+    protected function messages(): array
+    {
+        return 
+        [          
+           // Validation messages 
+        ];
+    }
+}
