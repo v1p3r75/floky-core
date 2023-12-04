@@ -27,21 +27,8 @@ class MakeService extends Command
 
         $name = $input->getArgument('name');        
         $path = app_services_path( $name . '.php');
-        $stub = $this->getStub('service.make', ['name' => $name]);
+        
+        return $this->make($output, $name, $path, 'service.make');
 
-        if( file_exists($path)) {
-
-            $output->writeln("<error>This File already exists</error>");
-            return Command::FAILURE;
-        }
-
-        if (! file_put_contents($path, $stub)) {
-
-            $output->writeln("<error>An error occurred while creating the file</error>");
-            return Command::FAILURE;
-        }
-
-        $output->writeln("<info> Filed created : [$path]</info>");
-        return Command::SUCCESS;
     }
 }
