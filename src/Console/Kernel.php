@@ -10,4 +10,8 @@ return [
     Floky\Console\Commands\MakeService::class,
     Floky\Console\Commands\MakeCommand::class,
     Floky\Console\Commands\MakeResource::class,
+
+    Floky\Console\Commands\UpApplication::class,
+    Floky\Console\Commands\DownApplication::class,
+
 ];
