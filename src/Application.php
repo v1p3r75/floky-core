@@ -2,6 +2,7 @@
 
 namespace Floky;
 
+use Dotenv\Dotenv;
 use Error;
 use ErrorException;
 use Exception;
@@ -50,7 +51,7 @@ class Application
             set_exception_handler([$this, 'handleException']);
             set_error_handler([$this, 'handleError']);
     
-            Config::loadEnv(dirname(self::$root_dir));
+            Config::loadEnv(Dotenv::createImmutable(dirname(self::$root_dir)));
     
             $this->hl = new Highlighter;
             $this->request = Request::getInstance();

@@ -43,11 +43,10 @@ class Config extends Facades
         return isset($_ENV[$key]) ? $_ENV[$key] : $default;
     }
 
-    public static function loadEnv(string $root_dir): bool
+    public static function loadEnv(Dotenv $envInstance,): bool
     {
 
-        $dotenv = Dotenv::createImmutable($root_dir);
-        $dotenv->safeLoad();
+        $envInstance->safeLoad();
 
         return true;
     }
