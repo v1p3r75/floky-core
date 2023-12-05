@@ -2,17 +2,15 @@
 
 namespace App\Http\Resources;
 
+use Floky\Http\Requests\Request;
 use Floky\Http\Resources\Resource;
 
-class {{name}} extends Resource 
+class {{name}} extends Resource
 {
-
-    public function get(): array
+    public function toArray(Request $request): array
     {
-
         return [
-
+            
         ];
     }
-
 }

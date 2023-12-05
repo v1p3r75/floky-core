@@ -7,7 +7,7 @@ use Floky\Http\Resources\Resource;
 
 class ObjectResource extends Resource
 {
-    public function get(): array
+    public function toArray(Request $request): array
     {
         return [
             'first' => $this->key1,
