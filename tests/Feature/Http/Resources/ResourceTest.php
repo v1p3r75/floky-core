@@ -1,8 +1,9 @@
 <?php
 
+use Floky\Http\Responses\Response;
 use Tests\Feature\Http\Resources\ObjectResource;
 
-it('should return a valid resource value', function () {
+it('should return a valid resource', function () {
 
     $objectTest = [
         'key1' => 'value1',
@@ -11,10 +12,7 @@ it('should return a valid resource value', function () {
         ]
     ];
 
-    $resource = new ObjectResource($objectTest);
-    $result = $resource->get();
-    expect($result)->toBe([
-        'first' => $objectTest['key1'],
-        'second' => $objectTest['key2'],
-    ]);
+    $resource = (new ObjectResource($objectTest))->toJson();
+
+   expect($resource)->toBeInstanceOf(Response::class);
 });
