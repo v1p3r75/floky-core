@@ -20,16 +20,16 @@ class Config extends Facades
 
         if (array_key_exists($file, $config_files)) {
 
-            if(!empty($params)) {
+            if (!empty($params)) {
 
                 $config = require $config_files[$file];
 
-                foreach($params as $param)
+                foreach ($params as $param)
                     $config = $config[$param];
 
                 return $config;
             }
-            
+
             return require $config_files[$file];
         }
 
@@ -51,17 +51,24 @@ class Config extends Facades
         return true;
     }
 
-    public static function getDirectoryFiles(string $dir): array
+    public static function getDirectoryFiles(string $dir, bool $deepSearch = false): array
     {
 
         $files = [];
         $content = scandir($dir);
 
         if ($content) {
+
             foreach ($content as $value) {
                 $path = $dir . $value;
+                
                 if (is_file($path)) {
+
                     $files[$value] = $path;
+
+                } else if ($deepSearch && is_dir($path) && !in_array($value, ['.', '..'])) {
+
+                    $files = array_merge($files, self::getDirectoryFiles($path . "/", true));
                 }
             }
         }

@@ -154,7 +154,10 @@ class Application
     private function loadAppRoutes(): void
     {
 
-        $this->loadRouteAttributes();
+        if(Config::get('app.providers.routing.attributes_in_controllers')){
+
+            $this->loadRouteInControllers();
+        }
 
         $kernel = self::getHttpKernel();
 
@@ -172,7 +175,7 @@ class Application
         }
     }
 
-    private function loadRouteAttributes()
+    private function loadRouteInControllers(): void
     {
 
         $controllers = $this->getControllers();
@@ -200,6 +203,44 @@ class Application
                 }
             }
         }
+    }
+    private function getControllers(): array
+    {
+
+        $path = app_controllers_path();
+
+        $files = Config::getDirectoryFiles($path, true);
+
+        $files = array_map(function ($file) {
+
+            $namespace = $this->getNamespaceFromPath(pathinfo($file, PATHINFO_DIRNAME));
+
+            $class = $namespace . pathinfo($file, PATHINFO_FILENAME);
+
+            if (pathinfo($file, PATHINFO_EXTENSION) === 'php' &&
+                class_exists($class) &&
+                is_subclass_of($class, Controller::class))
+            
+                return $class;
+
+        }, $files);
+
+        return array_filter($files, fn($file) => !is_null($file));
+    }
+
+    private function getNamespaceFromPath(string $path): string
+    {
+        $appSrc = $this->getAppDirectory();
+
+        if (str_starts_with($path, $appSrc)) {
+
+            $path = str_replace($appSrc, "", $path);
+            $path = trim(str_replace("/", "\\", $path), "\\");
+
+            return ucfirst($path) . "\\";
+        }
+
+        return "";
     }
 
     public static function getAppDirectory()
@@ -298,33 +339,6 @@ class Application
         $data['previews'] = $this->getCodePreview($err->getTrace());
 
         return view_resource($template, $data);
-    }
-
-    private function getControllers()
-    {
-
-        $path = app_controllers_path();
-        $namespace = "App\\Controllers\\";
-
-        $files = Config::getDirectoryFiles($path);
-
-        $files = array_filter($files, function ($file) use ($path, $namespace) {
-
-            $full_path = $path . '/' . $file;
-            $class = $namespace . pathinfo($full_path, PATHINFO_FILENAME);
-
-            return pathinfo($full_path, PATHINFO_EXTENSION) === 'php'
-                    && class_exists($class)
-                    && is_subclass_of($class, Controller::class);
-        });
-
-        return array_map(function ($file) use ($path, $namespace) {
-
-            $controllersPath = $path . $file;
-            $class = $namespace . pathinfo($controllersPath, PATHINFO_FILENAME);
-
-            return $class;
-        }, $files);
     }
 
     private function getCodePreview(array $traceback)
