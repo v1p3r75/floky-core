@@ -11,11 +11,14 @@ use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Config;
 use Floky\Facades\Security;
+use Floky\Http\Controllers\Controller;
 use Floky\Http\Kernel;
 use Floky\Http\Middlewares\Middlewares;
 use Floky\Http\Requests\Request;
+use Floky\Routing\Attributes\RouteAttribute;
 use Floky\Routing\Route;
 use Highlight\Highlighter;
+use ReflectionAttribute;
 
 class Application
 {
@@ -46,13 +49,13 @@ class Application
         self::$root_dir = $root_dir;
         self::$core_dir = __DIR__;
 
-        if (! $isConsole) {
+        if (!$isConsole) {
 
             set_exception_handler([$this, 'handleException']);
             set_error_handler([$this, 'handleError']);
-    
+
             Config::loadEnv(Dotenv::createImmutable(dirname(self::$root_dir)));
-    
+
             $this->hl = new Highlighter;
             $this->request = Request::getInstance();
             $this->container = Container::getInstance();
@@ -151,6 +154,8 @@ class Application
     private function loadAppRoutes(): void
     {
 
+        $this->loadRouteAttributes();
+
         $kernel = self::getHttpKernel();
 
         $path = app_routes_path();
@@ -164,6 +169,36 @@ class Application
                 require_once $group_file;
             } else
                 throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in " . app_routes_path(), Code::FILE_NOT_FOUND);
+        }
+    }
+
+    private function loadRouteAttributes()
+    {
+
+        $controllers = $this->getControllers();
+
+        foreach ($controllers as $controller) {
+
+            $reflection = new \ReflectionClass($controller);
+            $methods = $reflection->getMethods();
+
+            foreach ($methods as $method) {
+
+                if ($method->isConstructor()) continue;
+
+                $attributes = $method->getAttributes(RouteAttribute::class, ReflectionAttribute::IS_INSTANCEOF);
+
+                if ($attributes) {
+
+                    foreach ($attributes as $attribute) {
+
+                        $routeAttribute = $attribute->newInstance();
+                        $resolvedConstructor = $this->services()->get($controller);
+                        $callback = $method->getClosure($resolvedConstructor);
+                        $routeAttribute->run($callback);
+                    }
+                }
+            }
         }
     }
 
@@ -216,7 +251,7 @@ class Application
     public function handleException(Exception | Error $err)
     {
 
-        $exceptsInProduction = [Code::PAGE_NOT_FOUND, Code::UNAUTHORIZED, Code::APP_DOWN ];
+        $exceptsInProduction = [Code::PAGE_NOT_FOUND, Code::UNAUTHORIZED, Code::APP_DOWN];
 
         $currentEnv = Config::get('app.environment') ?? Application::PRODUCTION;
 
@@ -263,6 +298,33 @@ class Application
         $data['previews'] = $this->getCodePreview($err->getTrace());
 
         return view_resource($template, $data);
+    }
+
+    private function getControllers()
+    {
+
+        $path = app_controllers_path();
+        $namespace = "App\\Controllers\\";
+
+        $files = Config::getDirectoryFiles($path);
+
+        $files = array_filter($files, function ($file) use ($path, $namespace) {
+
+            $full_path = $path . '/' . $file;
+            $class = $namespace . pathinfo($full_path, PATHINFO_FILENAME);
+
+            return pathinfo($full_path, PATHINFO_EXTENSION) === 'php'
+                    && class_exists($class)
+                    && is_subclass_of($class, Controller::class);
+        });
+
+        return array_map(function ($file) use ($path, $namespace) {
+
+            $controllersPath = $path . $file;
+            $class = $namespace . pathinfo($controllersPath, PATHINFO_FILENAME);
+
+            return $class;
+        }, $files);
     }
 
     private function getCodePreview(array $traceback)
