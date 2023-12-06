@@ -7,12 +7,12 @@ use Floky\Routing\Route;
 
 
 #[Attribute(Attribute::TARGET_METHOD)]
-class Get extends RouteAttribute
+class Post extends RouteAttribute
 {
 
     public function run($callback)
     {
 
-        return $this->save(Route::get($this->uri, $callback));
+        return $this->save(Route::post($this->uri, $callback));
     }
 }
