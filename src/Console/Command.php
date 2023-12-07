@@ -53,13 +53,18 @@ class Command extends SymfonyCommand
         ?array $options = null
     ): int {
 
-        $stub = $this->getStub($stub, $options ?? ['name' => $name]);
-
+        $name = explode('/', $name);
+        $stub = $this->getStub($stub, $options ?? ['name' => end($name)]);
+        
+        $directory = dirname($file);
+        
         if (file_exists($file)) {
 
             $output->writeln("<error>This File already exists</error>");
             return Command::FAILURE;
         }
+
+        @mkdir($directory, 0777, true);
 
         if (!file_put_contents($file, $stub)) {
 
@@ -67,7 +72,7 @@ class Command extends SymfonyCommand
             return Command::FAILURE;
         }
 
-        $output->writeln("<info> Filed created : [$file]</info>");
+        $output->writeln("<info> File created : [$file]</info>");
         return Command::SUCCESS;
     }
 }
