@@ -2,7 +2,7 @@
 
 namespace Floky\Facades;
 
-use Exception;
+use Floky\Exceptions\MailerException;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
@@ -88,7 +88,7 @@ class Email extends Facades
 
         } catch (PHPMailerException $e) {
 
-            throw new Exception($e->getMessage(), 4400);
+            throw new MailerException($e->getMessage());
         }
     }
 

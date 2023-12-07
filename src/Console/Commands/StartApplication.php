@@ -21,7 +21,7 @@ class StartApplication extends Command
     {
 
         $this
-        ->addOption('port', 'p', InputOption::VALUE_OPTIONAL, 'The name of the command', 8080);
+        ->addOption('port', 'p', InputOption::VALUE_OPTIONAL, 'Your app listen port', 8080);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
