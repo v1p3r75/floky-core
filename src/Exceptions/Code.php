@@ -23,9 +23,9 @@ class Code
 
     const DATA_VALIDATION = 4070;
 
+    const MAILER = 4090;
 
     const UNAUTHORIZED = 401;
 
-    const APP_DOWN = 5000;
-    
+    const APP_DOWN = 5000;    
 }
