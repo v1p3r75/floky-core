@@ -22,6 +22,8 @@ class Route
 
     public static array $verbs = ['GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
+    private static ?string $current_route = null;
+
 
     private static function methodIsCorrect(string | array $method = ''): bool
     {
@@ -39,7 +41,7 @@ class Route
         return in_array(strtoupper($method), self::$verbs);
     }
 
-    public static function get(string $uri, $callback)
+    public static function get(string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, ['GET', 'HEAD'], $callback);
@@ -84,8 +86,10 @@ class Route
     }
 
 
-    private static function add(string $uri, array $method, Closure | callable | array $callback)
+    private static function add(string $uri, array $method, Closure | callable | array | null $callback)
     {
+
+        self::$current_route = uniqid("route_");
 
         if (!self::methodIsCorrect($method)) {
 
@@ -94,7 +98,15 @@ class Route
 
         $uri = self::format_uri($uri);
 
-        self::$routes[] = ['uri' => $uri, 'methods' => $method, 'callback' => $callback];
+        $payload = ['uri' => $uri, 'methods' => $method, 'callback' => $callback];
+
+        if (self::$isGroup) {
+
+            self::$groups[self::$current_group][self::$current_route] = $payload;
+            return new static;
+        }
+
+        self::$routes[self::$current_route] = $payload;
 
         return new static;
     }
@@ -111,7 +123,7 @@ class Route
         //     throw new ParseErrorException("Router does not support '$method'  method");
         // }
 
-        foreach (self::$routes as $route) {
+        foreach (self::getAll() as $route) {
 
             $current_route = $route['uri'];
 
@@ -151,10 +163,10 @@ class Route
         throw new NotFoundException('Page Not found', Code::PAGE_NOT_FOUND);
     }
 
-    public static function runCallback(array | Closure | callable $callback, array $params = []) {
+    public static function runCallback(array | Closure | callable | null $callback, array $params = []) {
 
         $app = Application::getInstance();
-
+        
         if (is_array($callback)) { 
 
             $controller = $app->services()->get($callback[0]);
@@ -171,21 +183,42 @@ class Route
             
             return call_user_func_array($resolved_callback[0], $resolved_callback[1]);
         }
+
+        throw new ParseErrorException('Not callback found for this route.', 2000);
     }
 
     public static function middlewares(array $middlewares = [])
     {
+
+        if (self::$isGroup) {
+
+            $route_middlewares = &self::$groups[self::$current_group][self::$current_route];
+
+            if (! isset($route_middlewares['middlewares'])) {
+
+                $route_middlewares['middlewares'] = [];
         
-        $route_index = self::getCurrentRoute();
+            }
 
-        self::addRouteData($route_index, 'middlewares', $middlewares);
+            $route_middlewares['middlewares'] = array_merge($route_middlewares['middlewares'], $middlewares);
 
-        return new static;
+            return new static;
+        }
+
+        if (isset(self::$routes[self::$current_route])) {
+
+            self::$routes[self::$current_route]['middlewares'] = $middlewares;
+            return new static;
+
+        }
+
+        throw new ParseErrorException('middlewares cannot be used on a group. Use groupMiddlewares instead.', 2000);
+
     }
 
     public static function name(string $name)
     {
-        foreach(self::$routes as $route) {
+        foreach(self::getAll() as $route) {
 
             if(isset($route["name"]) && $route["name"] == $name) {
 
@@ -194,11 +227,24 @@ class Route
             }
         }
 
-        $route_index = self::getCurrentRoute();
+        if (self::$isGroup) {
 
-        self::addRouteData($route_index, 'name', $name);
+            $route = &self::$groups[self::$current_group][self::$current_route];
 
-        return new static;
+            $route['name'] = $name;
+
+            return new static;
+        }
+
+        if (isset(self::$routes[self::$current_route])) {
+
+            self::$routes[self::$current_route]['name'] = $name;
+            return new static;
+
+        }
+
+        throw new ParseErrorException('name cannot be used on a group', 2000);
+
     }
 
     private static function format_uri(string $uri) {
@@ -208,15 +254,7 @@ class Route
 
     public static function getAll(): array
     {
-        return self::$routes;
-    }
-
-    private static function getCurrentRoute() {
-
-        $route = end(self::$routes);
-        $position = array_keys(self::$routes, $route);
-        
-        return implode(', ', $position);
+        return array_merge(self::$routes, self::getGroups());
     }
 
     private static function addRouteData(int $index, string $key, $payload)
