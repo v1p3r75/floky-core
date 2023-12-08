@@ -10,7 +10,7 @@ use Floky\Routing\Route;
 class Patch extends RouteAttribute
 {
 
-    public function run($callback)
+    public function run(\Closure $callback)
     {
 
         return $this->save(Route::patch($this->uri, $callback));

@@ -10,7 +10,7 @@ use Floky\Routing\Route;
 class Delete extends RouteAttribute
 {
 
-    public function run($callback)
+    public function run(\Closure $callback)
     {
 
         return $this->save(Route::delete($this->uri, $callback));
