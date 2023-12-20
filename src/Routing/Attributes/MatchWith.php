@@ -15,7 +15,7 @@ class MatchWith extends RouteAttribute
         parent::__construct($uri, $name, $middlewares);
     }
 
-    public function run($callback)
+    public function run(\Closure $callback)
     {
 
         return $this->save(Route::match($this->methods, $this->uri, $callback));

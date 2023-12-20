@@ -27,20 +27,22 @@ trait RouteGroup
 
     public static function prefix(string $name)
     {
-     
+
         self::isValid('prefix');
 
         try {
 
-            self::$groups[self::$current_group] = array_map(function ($group) use ($name) {
+            self::$groups[self::$current_group] = array_map(function ($route) use ($name) {
 
-                $group['uri'] = trim($name, "/") . "/" . $group['uri'];
-    
-                return $group;
-    
+                // if the saved uri is blanck ("") d'ont add a slash
+
+                $route['uri'] = $route['uri'] == "" ?
+                    trim($name, "/") . $route['uri'] :
+                    trim($name) . "/" . $route['uri'];
+
+                return $route;
             }, self::$groups[self::$current_group]);
-
-        } catch(ErrorException $e) {
+        } catch (ErrorException $e) {
 
             throw new ParseErrorException("'prefix' can only be used on a group", 2000);
         }
@@ -58,12 +60,10 @@ trait RouteGroup
             self::$groups[self::$current_group] = array_map(function ($route) use ($controller) {
 
                 $route['callback'] = $controller;
-    
-                return $route;
-    
-            }, self::$groups[self::$current_group]);
 
-        } catch(ErrorException $e) {
+                return $route;
+            }, self::$groups[self::$current_group]);
+        } catch (ErrorException $e) {
 
             throw new ParseErrorException("'controller' can only be used on a group", 2000);
         }
@@ -73,24 +73,22 @@ trait RouteGroup
 
     public static function groupMiddlewares(array $middlewares)
     {
-        
+
         self::isValid('groupMiddlewares');
 
         try {
 
             self::$groups[self::$current_group] = array_map(function ($route) use ($middlewares) {
 
-                if(!isset($route['middlewares'])) {
+                if (!isset($route['middlewares'])) {
                     $route['middlewares'] = [];
                 }
-    
+
                 $route['middlewares'] = array_merge($route['middlewares'], $middlewares);
 
                 return $route;
-    
             }, self::$groups[self::$current_group]);
-
-        } catch(ErrorException $e) {
+        } catch (ErrorException $e) {
 
             throw new ParseErrorException("'groupMiddlewares' can only be used on a group", 2000);
         }
@@ -99,10 +97,10 @@ trait RouteGroup
     }
 
 
-    private static function isValid(string $for = "") : void
+    private static function isValid(string $for = ""): void
     {
         if (self::$isGroup) {
-            
+
             throw new ParseErrorException("'$for' can only be used on a group", 2000);
         }
     }
@@ -110,7 +108,7 @@ trait RouteGroup
     {
         $groups = [];
 
-        foreach(self::$groups as $group) {
+        foreach (self::$groups as $group) {
 
             $groups = array_merge($groups, $group);
         }

@@ -2,6 +2,7 @@
 
 namespace Floky\Routing\Attributes;
 
+use Closure;
 use Floky\Routing\Route;
 
 abstract class RouteAttribute
@@ -14,7 +15,7 @@ abstract class RouteAttribute
     ){
         }
 
-    abstract public function run($callback);
+    abstract public function run(Closure $callback);
 
     protected function save(Route $instance) {
 

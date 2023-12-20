@@ -10,7 +10,7 @@ use Floky\Routing\Route;
 class Put extends RouteAttribute
 {
 
-    public function run($callback)
+    public function run(\Closure $callback)
     {
 
         return $this->save(Route::put($this->uri, $callback));

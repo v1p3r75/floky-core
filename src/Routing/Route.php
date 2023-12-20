@@ -46,40 +46,40 @@ class Route
 
         return self::add($uri, ['GET', 'HEAD'], $callback);
     }
-    public static function post(string $uri, $callback)
+    public static function post(string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, ['POST'], $callback);
     }
-    public static function put(string $uri, $callback)
+    public static function put(string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, ['PUT'], $callback);
     }
-    public static function patch(string $uri, $callback)
+    public static function patch(string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, ['PATCH'], $callback);
     }
-    public static function delete(string $uri, $callback)
+    public static function delete(string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, ['DELETE'], $callback);
     }
 
-    public static function options(string $uri, $callback)
+    public static function options(string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, ['OPTIONS'], $callback);
     }
 
-    public static function match(array $methods, string $uri, $callback)
+    public static function match(array $methods, string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, $methods, $callback);
     }
 
-    public static function any(string $uri, $callback)
+    public static function any(string $uri, array | Closure | null $callback = null)
     {
 
         return self::add($uri, self::$verbs, $callback);
