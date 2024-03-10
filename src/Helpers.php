@@ -297,6 +297,14 @@ if (!function_exists('app_config_path')) {
     }
 }
 
+if (!function_exists('app_database_path')) {
+    function app_database_path(string $path = "")
+    {
+
+        return app_root_path("/database/$path");
+    }
+}
+
 if (!function_exists('app_cache_path')) {
     function app_cache_path(string $path = "")
     {
