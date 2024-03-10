@@ -48,13 +48,12 @@ class Application
 
         self::$root_dir = $root_dir;
         self::$core_dir = __DIR__;
+        Config::loadEnv(Dotenv::createImmutable(dirname(self::$root_dir)));
 
         if (!$isConsole) {
 
             set_exception_handler([$this, 'handleException']);
             set_error_handler([$this, 'handleError']);
-
-            Config::loadEnv(Dotenv::createImmutable(dirname(self::$root_dir)));
 
             $this->hl = new Highlighter;
             $this->request = Request::getInstance();
