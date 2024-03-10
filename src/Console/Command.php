@@ -5,6 +5,7 @@ namespace Floky\Console;
 use Floky\Application;
 use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
+use Nexa\Nexa;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Output\Output;
 
@@ -74,5 +75,12 @@ class Command extends SymfonyCommand
 
         $output->writeln("<info> File created : [$file]</info>");
         return Command::SUCCESS;
+    }
+
+
+    protected function getNexa() {
+
+
+        return Nexa::getInstance(app_config_path('database.php'));
     }
 }
