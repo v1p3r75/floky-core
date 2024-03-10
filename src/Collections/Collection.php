@@ -15,9 +15,9 @@ class Collection implements Countable, ArrayAccess
     /**
      * Collection constructor.
      *
-     * @param array $items The array of items to initialize the collection.
+     * @param array $items The array (or literal) of items to initialize the collection.
      */
-    public function __construct(private array $items)
+    public function __construct(private iterable $items)
     {
     }
 
