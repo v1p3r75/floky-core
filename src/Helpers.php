@@ -233,6 +233,14 @@ if (!function_exists('app_models_path')) {
     }
 }
 
+if (!function_exists('app_entities_path')) {
+    function app_entities_path(string $path = "")
+    {
+
+        return app_http_path("Entities/$path");
+    }
+}
+
 if (!function_exists('app_requests_path')) {
     function app_requests_path(string $path = "")
     {

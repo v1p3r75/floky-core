@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Entities;
+
+use Nexa\Attributes\Entities\Entity;
+
+#[Entity]
+class {{name}}
+{
+
+}
