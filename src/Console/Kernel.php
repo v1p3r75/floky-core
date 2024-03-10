@@ -10,6 +10,8 @@ return [
     Floky\Console\Commands\MakeService::class,
     Floky\Console\Commands\MakeCommand::class,
     Floky\Console\Commands\MakeResource::class,
+    Floky\Console\Commands\MakeModel::class,
+    Floky\Console\Commands\MakeEntity::class,
     
     Floky\Console\Commands\MakeMigrations::class,
     Floky\Console\Commands\RunMigrations::class,

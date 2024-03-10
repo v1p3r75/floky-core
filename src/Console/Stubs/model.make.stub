@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Models;
+
+use Floky\Models\Model;
+
+class {{name}} extends Model
+{
+
+    // protected $entity = {{name}}Entity::class;
+
+}

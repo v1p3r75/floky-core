@@ -1,11 +1,17 @@
 <?php
 
-use Floky\Facades\Config;
+namespace Floky\Models;
+
 use Nexa\Models\Model as BaseModel;
 
 class Model extends BaseModel
 {
 
-    protected $_config_path = app_config_path('database.php');
+    public function __construct() {
+
+        $this->setConfigPath(app_config_path('database.php'));
+        parent::__construct();
+
+    }
 
 }
