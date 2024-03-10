@@ -14,7 +14,7 @@ use Floky\Http\Requests\Request;
 class Route
 {
 
-    use Middlewares, RouteGroup;
+    use Middlewares;
 
     private static array $routes = [];
 
@@ -100,12 +100,6 @@ class Route
 
         $payload = ['uri' => $uri, 'methods' => $method, 'callback' => $callback];
 
-        if (self::$isGroup) {
-
-            self::$groups[self::$current_group][self::$current_route] = $payload;
-            return new static;
-        }
-
         self::$routes[self::$current_route] = $payload;
 
         return new static;
@@ -190,29 +184,9 @@ class Route
     public static function middlewares(array $middlewares = [])
     {
 
-        if (self::$isGroup) {
-
-            $route_middlewares = &self::$groups[self::$current_group][self::$current_route];
-
-            if (! isset($route_middlewares['middlewares'])) {
-
-                $route_middlewares['middlewares'] = [];
+        self::$routes[self::$current_route]['middlewares'] = $middlewares;
         
-            }
-
-            $route_middlewares['middlewares'] = array_merge($route_middlewares['middlewares'], $middlewares);
-
-            return new static;
-        }
-
-        if (isset(self::$routes[self::$current_route])) {
-
-            self::$routes[self::$current_route]['middlewares'] = $middlewares;
-            return new static;
-
-        }
-
-        throw new ParseErrorException('middlewares cannot be used on a group. Use groupMiddlewares instead.', 2000);
+        return new static;
 
     }
 
@@ -227,24 +201,9 @@ class Route
             }
         }
 
-        if (self::$isGroup) {
-
-            $route = &self::$groups[self::$current_group][self::$current_route];
-
-            $route['name'] = $name;
-
-            return new static;
-        }
-
-        if (isset(self::$routes[self::$current_route])) {
-
-            self::$routes[self::$current_route]['name'] = $name;
-            return new static;
-
-        }
-
-        throw new ParseErrorException('name cannot be used on a group', 2000);
-
+        self::$routes[self::$current_route]['name'] = $name;
+        
+        return new static;
     }
 
     private static function format_uri(string $uri) {
@@ -254,15 +213,8 @@ class Route
 
     public static function getAll(): array
     {
-        return array_merge(self::$routes, self::getGroups());
-    }
 
-    private static function addRouteData(int $index, string $key, $payload)
-    {
-
-        self::$routes[$index][$key] = $payload;
-
-        return true;
+        return self::$routes;
     }
 
     public static function getRouteByName(string $name) {
