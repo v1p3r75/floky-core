@@ -210,6 +210,23 @@ if (!function_exists('app_path')) {
     }
 }
 
+
+if (!function_exists('app_models_path')) {
+    function app_models_path(string $path = "")
+    {
+
+        return app_path("Models/$path");
+    }
+}
+
+if (!function_exists('app_entities_path')) {
+    function app_entities_path(string $path = "")
+    {
+
+        return app_path("Entities/$path");
+    }
+}
+
 if (!function_exists('app_http_path')) {
     function app_http_path(string $path = "")
     {
@@ -222,22 +239,6 @@ if (!function_exists('app_controllers_path')) {
     {
 
         return app_http_path("Controllers/$path");
-    }
-}
-
-if (!function_exists('app_models_path')) {
-    function app_models_path(string $path = "")
-    {
-
-        return app_http_path("Models/$path");
-    }
-}
-
-if (!function_exists('app_entities_path')) {
-    function app_entities_path(string $path = "")
-    {
-
-        return app_http_path("Entities/$path");
     }
 }
 
