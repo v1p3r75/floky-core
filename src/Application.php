@@ -73,15 +73,12 @@ class Application
     }
 
     /**
-     * Save all applications services (middlewares, consoles, etc)
+     * Save all applications services
      */
-    private function saveAppServices(array $services)
+    private function saveAppServices()
     {
 
-        foreach ($services as $service) {
-
-            (new $service)->register();
-        }
+        return (new \App\Providers\AppServiceProvider)->register();
     }
 
     public function services(): Container
@@ -98,9 +95,7 @@ class Application
 
         require(__DIR__ . "/Helpers.php"); // load function helpers
 
-        $services = $this->getAllServices();
-
-        $this->saveAppServices($services);
+        $this->saveAppServices();
 
         // Collect GET, POST, PUT, PATCH, DELETE together
         $requestData = $this->collectRequestData();
@@ -124,20 +119,6 @@ class Application
         return Route::dispatch($request, $kernel);
     }
 
-
-    public function getAllServices(): array
-    {
-
-        $servicesKernelPath = core_services_path("Kernel.php");
-
-        $appServicesPath = app_services_path("Kernel.php");
-
-        $appServices = require($appServicesPath);
-
-        $servicesKernel = require($servicesKernelPath);
-
-        return [...$servicesKernel, ...$appServices];
-    }
 
     public static function getHttpKernel()
     {

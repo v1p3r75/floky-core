@@ -274,11 +274,11 @@ if (!function_exists('app_resources_path')) {
     }
 }
 
-if (!function_exists('app_services_path')) {
-    function app_services_path(string $path = "")
+if (!function_exists('app_providers_path')) {
+    function app_providers_path(string $path = "")
     {
 
-        return app_path("Services/$path");
+        return app_path("Providers/$path");
     }
 }
 

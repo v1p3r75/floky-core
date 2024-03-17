@@ -1,9 +1,9 @@
 <?php
 
-namespace Floky\Services;
+namespace Floky\Providers;
 
-use Closure;
 use Floky\Application;
+use Floky\Http\Requests\Request;
 
 abstract class ServiceProvider
 {
@@ -13,6 +13,11 @@ abstract class ServiceProvider
     public function __construct()
     {
         $this->app = Application::getInstance();
+
+        $this->app->services()->set(Request::class, function() {
+
+            return Request::getInstance();
+        });
     }
 
     abstract public function register();
