@@ -14,8 +14,6 @@ class Request
 
     public static ?Request $instance = null;
 
-    public string $attr = "start"; /* Just for middlewares testing */
-
     public static array $data = [];
 
     public static function getInstance()
