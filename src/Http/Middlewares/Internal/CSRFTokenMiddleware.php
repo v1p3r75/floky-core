@@ -2,6 +2,7 @@
 
 namespace Floky\Http\Middlewares\Internal;
 
+use Closure;
 use Exception;
 use Floky\Exceptions\UnAuthorizedException;
 use Floky\Facades\Security;
@@ -14,7 +15,7 @@ class CSRFTokenMiddleware implements MiddlewareInterface
 
     protected array $except = [];
 
-    public function handle(Request $request): Request
+    public function handle(Request $request, Closure $next)
     {
         if (! in_array($request->getUri(), $this->except) && $request->isPost()) {
 
@@ -24,7 +25,7 @@ class CSRFTokenMiddleware implements MiddlewareInterface
            }
         }
 
-        return $request;
+        return $next($request);
 
     }
 }

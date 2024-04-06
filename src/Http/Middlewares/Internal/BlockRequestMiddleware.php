@@ -2,6 +2,7 @@
 
 namespace Floky\Http\Middlewares\Internal;
 
+use Closure;
 use Floky\Exceptions\ApplicationDownException;
 use Floky\Facades\Config;
 use Floky\Http\Middlewares\MiddlewareInterface;
@@ -12,8 +13,9 @@ class BlockRequestMiddleware implements MiddlewareInterface
 
     protected array $except = [];
 
-    public function handle(Request $request): Request
+    public function handle(Request $request, Closure $next)
     {
+
         if (! in_array($request->getUri(), $this->except)) {
 
             if(Config::get('app.maintenance')) {
@@ -22,7 +24,7 @@ class BlockRequestMiddleware implements MiddlewareInterface
             }
         }
 
-        return $request;
+        return $next($request);
 
     }
 }

@@ -9,18 +9,21 @@ use Floky\Http\Requests\Request;
 trait Middlewares
 {
 
-    private static function runMiddlewares(array $middlewares, Request $request): Request {
+    private static function runMiddlewares(array $middlewares, Request $request) {
 
         if (count($middlewares) > 0) {
 
             $currentMiddleware = new $middlewares[0];
 
-            $currentRequest = $currentMiddleware->handle($request);
+            $currentRequest = $currentMiddleware->handle($request, function ($nextRequest) use ($middlewares) {
 
-            self::runMiddlewares(array_slice($middlewares, 1), $currentRequest);
+                return self::runMiddlewares(array_slice($middlewares, 1), $nextRequest);
+            });
+
+            return $currentRequest;
         }
 
-        return $currentRequest ?? $request;
+        return $request;
 
     }
 

@@ -105,9 +105,12 @@ class Application
 
         $httpKernel = self::getHttpKernel();
 
-        $request = $this->runMiddlewares($httpKernel->getAllMiddlewares(), $this->request);
+        $return = $this->runMiddlewares($httpKernel->getAllMiddlewares(), $this->request);
 
-        return $this->dispatch($request, $httpKernel);
+        if ($return instanceof Request) {
+
+            return $this->dispatch($this->request, $httpKernel);
+        }
     }
 
 
