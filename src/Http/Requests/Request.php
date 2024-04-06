@@ -4,6 +4,7 @@ namespace Floky\Http\Requests;
 
 use Floky\Facades\Session;
 use Floky\Facades\Validator;
+use Floky\Facades\Auth;
 use Floky\Http\Requests\Content\Files;
 use Floky\Http\Requests\Content\Header;
 
@@ -100,12 +101,18 @@ class Request
         // pass
     }
 
+    public static function user() {
+
+        return Auth::user();
+    }
+
+
     public static function back(mixed $data = []) {
 
         Session::set('data', $data);
         self::redirectTo(self::getReferer());
         return;
-    } 
+    }
 
     public static function getUri(): string
     {

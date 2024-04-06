@@ -7,7 +7,7 @@ class Session extends Facades
 
     const TOKEN = 'csrf_token';
 
-    public static function get($key): string | false
+    public static function get($key): mixed
     {
 
         if (isset($_SESSION[$key])) {

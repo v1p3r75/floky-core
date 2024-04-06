@@ -5,6 +5,8 @@ namespace Floky\Exceptions;
 class Code
 {
 
+    const FORBIDDEN = 403;
+
     const PAGE_NOT_FOUND = 404;
 
     const FILE_NOT_FOUND = 4004;

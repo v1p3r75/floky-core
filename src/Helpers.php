@@ -6,6 +6,7 @@ use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Facades\Config;
 use Floky\Facades\Security;
+use Floky\Facades\Auth;
 use Floky\Facades\Session;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
@@ -80,6 +81,17 @@ if (!function_exists('response')) {
     }
 }
 
+if (!function_exists('user')) {
+
+    /**
+     * Get a current user
+     *
+     */
+    function user($key = null)
+    {
+        return !$key ? Auth::user() : (Auth::user()[$key] ?? null);
+    }
+}
 
 if (!function_exists('route')) {
 
