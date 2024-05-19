@@ -2,21 +2,14 @@
 
 namespace Floky\Facades;
 
-use BlakvGhost\PHPValidator\Validator as PHPValidator;
-use Floky\Exceptions\DataValidationException;
+use Floky\Validation\Validator as ValidationValidator;
 
-class Validator extends Facades
+class Validator extends Facade
 {
 
-    public static function validate(array $data, array $rules, array $messages = []) {
-
-        try {
-
-            return new PHPValidator($data, $rules, $messages);
-
-        } catch(\BlakvGhost\PHPValidator\ValidatorException $e) {
-
-            throw new DataValidationException($e->getMessage());
-        } 
+    public static function getTargetClass(): string
+    {
+     
+        return ValidationValidator::class;
     }
 }

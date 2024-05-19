@@ -14,7 +14,7 @@ class PHPMailerAdapter implements MailerInterface {
 
     private array $config;
 
-    public function __construct(protected PHPMailer $mail) {
+    public function __construct(private PHPMailer $mail) {
 
         $this->config = Config::get('mail');
 
