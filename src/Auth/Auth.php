@@ -10,7 +10,7 @@ class Auth
 
     const USER_KEY = '_user';
 
-    public function login(
+    public static function login(
         string $id,
         string $password,
         array $options = ['id' => 'email', 'password' => 'password']
@@ -30,7 +30,7 @@ class Auth
             if (Security::check($password, $result[$options['password']])) {
 
                 unset($result[$options['password']]);
-                Session::set($this::USER_KEY, new Collection($result));
+                Session::set(self::USER_KEY, new Collection($result));
 
                 return true;
             }
@@ -39,14 +39,14 @@ class Auth
         return false;
     }
 
-    public function user() {
+    public static function user() {
 
-        return Session::get($this::USER_KEY) ?? null;
+        return Session::get(self::USER_KEY) ?? null;
     }
 
     public function logout(bool $redirect = true, string $redirect_to = '') {
 
-        Session::set($this::USER_KEY, null);
+        Session::set(self::USER_KEY, null);
 
         if ($redirect) {
 

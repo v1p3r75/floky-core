@@ -7,7 +7,7 @@ use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Config\Config;
 use Floky\Auth\Security;
-use Floky\Facades\Auth;
+use Floky\Auth\Auth;
 use Floky\Session\Session;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;

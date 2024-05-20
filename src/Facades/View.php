@@ -2,6 +2,9 @@
 
 namespace Floky\Facades;
 
+/**
+ * @method mixed render(string $view, array $data = [])
+ */
 class View extends Facade
 {
 

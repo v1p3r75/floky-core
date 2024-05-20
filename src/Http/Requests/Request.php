@@ -4,7 +4,7 @@ namespace Floky\Http\Requests;
 
 use Floky\Session\Session;
 use Floky\Facades\Validator;
-use Floky\Facades\Auth;
+use Floky\Auth\Auth;
 use Floky\Http\Requests\Content\Files;
 use Floky\Http\Requests\Content\Header;
 
