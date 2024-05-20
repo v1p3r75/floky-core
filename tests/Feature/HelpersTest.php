@@ -4,6 +4,8 @@ use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
+use Floky\Validation\Adapters\BlakvGhostValidatorAdapter;
+use Floky\Validation\ValidatorInterface;
 
 it('response helper should return valid Response class', function () {
 
@@ -58,6 +60,11 @@ it('env helper should return a default value', function() {
 });
 
 it('validates value with validate helper', function(){
+
+    $this->app->services()->set(ValidatorInterface::class, function() {
+
+        return new BlakvGhostValidatorAdapter;
+    });
 
     $validation = validate(['email' => 'valid_email@gmail.com'], ['email' => 'email']);
     expect($validation->isValid())->toBeTrue();

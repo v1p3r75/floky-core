@@ -51,6 +51,15 @@ class Container
     {
         $reflection = new ReflectionClass($id);
 
+        if ($reflection->isInterface()) {
+
+            if (isset($this->services[$id]))
+
+                return $this->services[$id];
+            
+            throw new \Exception("Interface [$id] have not a binding class in service container");
+        }
+
         $constructor = $reflection->getConstructor();
 
         if (!$constructor) {
@@ -75,7 +84,7 @@ class Container
 
             if (!$type || $type->isBuiltin()) {
 
-                $dependencies[] = null;
+                $dependencies[] = $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null;
 
             } else {
 

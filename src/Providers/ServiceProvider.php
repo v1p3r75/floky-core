@@ -7,10 +7,12 @@ use Floky\Application;
 use Floky\Http\Requests\Request;
 use Floky\Mail\Adapters\PHPMailerAdapter;
 use Floky\Mail\Mailer;
+use Floky\Mail\MailerInterface;
 use Floky\Validation\Adapters\BlakvGhostValidatorAdapter;
-use Floky\Validation\Validator;
+use Floky\Validation\ValidatorInterface;
 use Floky\View\Adapters\BladeOneAdapter;
 use Floky\View\View;
+use Floky\View\ViewInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 
 abstract class ServiceProvider
@@ -27,18 +29,18 @@ abstract class ServiceProvider
             return Request::getInstance();
         });
 
-        $this->app->services()->set(Mailer::class, function() {
+        $this->app->services()->set(MailerInterface::class, function() {
 
             $mailerAdapter = new PHPMailerAdapter(new PHPMailer(true));
             return new Mailer($mailerAdapter);
         });
 
-        $this->app->services()->set(Validator::class, function() {
+        $this->app->services()->set(ValidatorInterface::class, function() {
 
-            return new Validator(new BlakvGhostValidatorAdapter);
+            return new BlakvGhostValidatorAdapter;
         });
         
-        $this->app->services()->set(View::class, function() {
+        $this->app->services()->set(ViewInterface::class, function() {
             
             $viewAdapter = new BladeOneAdapter(new BladeOne);
             return new View($viewAdapter);
