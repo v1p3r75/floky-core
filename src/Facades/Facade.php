@@ -3,16 +3,18 @@
 namespace Floky\Facades;
 
 use Floky\Application;
+use Floky\Validation\Validator;
 
 abstract class Facade
 {
 
-    abstract public static function getTargetClass(): string;
+    // protected static function getTargetClass() {}
 
     public static function __callStatic($method, $args) {
 
-        $class = Application::getInstance()->services()->get(self::getTargetClass());
+        $services = Application::getInstance()->services();
+        $method = $services->getMethod(self::getTargetClass(), $method, $args);
 
-        return call_user_func_array([$class, $method], $args);
+        return $services->runMethod($method);
     } 
 }

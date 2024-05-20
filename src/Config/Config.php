@@ -1,12 +1,12 @@
 <?php
 
-namespace Floky\Facades;
+namespace Floky\Config;
 
 use Dotenv\Dotenv;
 use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
 
-class Config extends Facades
+class Config
 {
 
 

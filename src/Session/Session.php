@@ -1,8 +1,8 @@
 <?php
 
-namespace Floky\Facades;
+namespace Floky\Session;
 
-class Session extends Facades
+class Session
 {
 
     const TOKEN = 'csrf_token';

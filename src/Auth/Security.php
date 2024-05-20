@@ -1,9 +1,10 @@
 <?php
 
-namespace Floky\Facades;
+namespace Floky\Auth;
 
+use Floky\Session\Session;
 
-class Security extends Facades
+class Security
 {
     public static function check(string $password, string $hached_password): bool
     {

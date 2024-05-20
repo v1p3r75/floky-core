@@ -5,8 +5,8 @@ namespace Floky\Http\Middlewares\Internal;
 use Closure;
 use Exception;
 use Floky\Exceptions\UnAuthorizedException;
-use Floky\Facades\Security;
-use Floky\Facades\Session;
+use Floky\Auth\Security;
+use Floky\Session\Session;
 use Floky\Http\Middlewares\MiddlewareInterface;
 use Floky\Http\Requests\Request;
 

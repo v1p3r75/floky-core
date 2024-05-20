@@ -8,7 +8,7 @@ class Mailer extends Facade
 
 {
 
-    public static function getTargetClass(): string
+    protected static function getTargetClass(): string
     {
         return MailMailer::class;
     }

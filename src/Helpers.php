@@ -1,18 +1,19 @@
 <?php
 
+use eftec\bladeone\BladeOne;
 use Floky\Application;
 use Floky\Collections\Collection;
 use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
-use Floky\Facades\Config;
-use Floky\Facades\Security;
+use Floky\Config\Config;
+use Floky\Auth\Security;
 use Floky\Facades\Auth;
-use Floky\Facades\Session;
+use Floky\Session\Session;
 use Floky\Http\Responses\Response;
 use Floky\Routing\Route;
 use \Floky\Facades\Validator;
-use Floky\Facades\View;
-
+use Floky\View\Adapters\BladeOneAdapter;
+use Floky\View\View;
 
 if (!function_exists('secure')) {
     /**
@@ -42,7 +43,7 @@ if (!function_exists('view')) {
     function view(string $name, $data = [])
     {
 
-        $view = new View();
+        $view = new View(new BladeOneAdapter(new BladeOne));
 
         echo $view->render($name, $data);
     }
@@ -60,7 +61,7 @@ if (!function_exists('view_resource')) {
     function view_resource(string $name, $data = [])
     {
 
-        $view = new View(true);
+        $view = new View(new BladeOneAdapter(new BladeOne), true);
         echo $view->render($name, $data);
 
     }

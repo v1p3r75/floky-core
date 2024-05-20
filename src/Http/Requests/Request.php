@@ -2,7 +2,7 @@
 
 namespace Floky\Http\Requests;
 
-use Floky\Facades\Session;
+use Floky\Session\Session;
 use Floky\Facades\Validator;
 use Floky\Facades\Auth;
 use Floky\Http\Requests\Content\Files;
