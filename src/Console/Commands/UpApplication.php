@@ -3,7 +3,7 @@
 namespace Floky\Console\Commands;
 
 use Floky\Console\Command;
-use Floky\Facades\Config;
+use Floky\Config\Config;
 use Symfony\Component\Console\Attribute\AsCommand;
 use \Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;

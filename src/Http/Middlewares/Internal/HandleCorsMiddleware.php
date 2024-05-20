@@ -3,7 +3,7 @@
 namespace Floky\Http\Middlewares\Internal;
 
 use Closure;
-use Floky\Facades\Config;
+use Floky\Config\Config;
 use Floky\Http\Middlewares\MiddlewareInterface;
 use Floky\Http\Requests\Request;
 

@@ -3,7 +3,7 @@
 namespace Floky\Mail\Adapters;
 
 use Floky\Exceptions\MailerException;
-use Floky\Facades\Config;
+use Floky\Config\Config;
 use Floky\Mail\MailerInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;

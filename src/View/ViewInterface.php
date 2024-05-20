@@ -5,9 +5,7 @@ namespace Floky\View;
 interface ViewInterface 
 {
     
-    public function setPath(string $path);
-
-    public function setCachePath(string $path);
+    public function setPath(string $path, string $cache_path);
 
     public function setExtension(string $extension);
 

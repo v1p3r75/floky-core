@@ -44,7 +44,7 @@ class Auth
         return Session::get(self::USER_KEY) ?? null;
     }
 
-    public function logout(bool $redirect = true, string $redirect_to = '') {
+    public static function logout(bool $redirect = true, string $redirect_to = '') {
 
         Session::set(self::USER_KEY, null);
 

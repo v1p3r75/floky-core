@@ -11,26 +11,20 @@ use Floky\View\ViewInterface;
 class BladeOneAdapter implements ViewInterface
 {
 
-    private string $cache_path;
-
     public function __construct(private BladeOne $engine) {
 
         $this->engine->setMode($this->engine::MODE_DEBUG);
     }
 
-    public function setPath(string $path) {
+    public function setPath(string $path, string $cache_path) {
 
-        return $this->engine->setPath($path, $this->cache_path);
+        $this->engine->setPath($path, $cache_path);
    }
 
-   public function setCachePath(string $path) {
-
-        return $this->cache_path = $path;
-    }
 
    public function setExtension(string $extension) {
 
-        return $this->engine->setFileExtension('.php');
+        $this->engine->setFileExtension('.php');
    }
 
 

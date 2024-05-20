@@ -31,8 +31,7 @@ abstract class ServiceProvider
 
         $this->app->services()->set(MailerInterface::class, function() {
 
-            $mailerAdapter = new PHPMailerAdapter(new PHPMailer(true));
-            return new Mailer($mailerAdapter);
+            return new PHPMailerAdapter(new PHPMailer(true));
         });
 
         $this->app->services()->set(ValidatorInterface::class, function() {
@@ -42,8 +41,7 @@ abstract class ServiceProvider
         
         $this->app->services()->set(ViewInterface::class, function() {
             
-            $viewAdapter = new BladeOneAdapter(new BladeOne);
-            return new View($viewAdapter);
+            return new BladeOneAdapter(new BladeOne);
         });
     }
 

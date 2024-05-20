@@ -12,8 +12,7 @@ class View
         if ($isFrameworkView)
             $this->engine->setExtension('.php');
 
-        $this->engine->setPath($path);
-        $this->engine->setCachePath(app_cache_path());
+        $this->engine->setPath($path, app_cache_path());
 
     }
 

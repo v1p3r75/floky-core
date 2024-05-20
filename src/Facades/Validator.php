@@ -12,7 +12,7 @@ class Validator extends Facade
 
     protected static $class = ValidationValidator::class;
 
-    public static function getTargetClass(): string
+    protected static function getTargetClass(): string
     {
      
         return ValidationValidator::class;
