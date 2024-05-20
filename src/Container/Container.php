@@ -3,11 +3,12 @@
 namespace Floky\Container;
 
 use Closure;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionMethod;
 
-class Container
+class Container implements ContainerInterface
 {
     private array $services = [];
 
@@ -25,19 +26,19 @@ class Container
         return self::$instance;
     }
 
-    public function get($id)
+    public function get(string $id)
     {
 
-        if (isset($this->services[$id])) {
+        if ($this->has($id)) {
 
             return $this->services[$id];
         }
         return $this->resolveDependencies($id);
     }
 
-    public function set($id, callable $definition)
+    public function set(string $id, callable $definition)
     {
-        if (isset($this->services[$id])) {
+        if ($this->has($id)) {
 
             return false;
         }
@@ -47,13 +48,19 @@ class Container
         return true;
     }
 
+    public function has(string $id): bool
+    {
+
+        return isset($this->services[$id]);
+    }
+
     private function resolveDependencies($id)
     {
         $reflection = new ReflectionClass($id);
 
         if ($reflection->isInterface()) {
 
-            if (isset($this->services[$id]))
+            if ($this->has($id))
 
                 return $this->services[$id];
             
