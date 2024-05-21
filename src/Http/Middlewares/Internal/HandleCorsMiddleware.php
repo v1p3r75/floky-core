@@ -2,7 +2,8 @@
 
 namespace Floky\Http\Middlewares\Internal;
 
-use Floky\Facades\Config;
+use Closure;
+use Floky\Config\Config;
 use Floky\Http\Middlewares\MiddlewareInterface;
 use Floky\Http\Requests\Request;
 
@@ -11,8 +12,9 @@ class HandleCorsMiddleware implements MiddlewareInterface
 
     protected array $except = [];
 
-    public function handle(Request $request): Request
+    public function handle(Request $request, Closure $next)
     {
+
         if (! in_array($request->getUri(), $this->except)) {
 
             $config = Config::get('cors');
@@ -26,7 +28,7 @@ class HandleCorsMiddleware implements MiddlewareInterface
 
         }
 
-        return $request;
+        return $next($request);
 
     }
 }

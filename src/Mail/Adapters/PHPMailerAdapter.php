@@ -1,23 +1,20 @@
 <?php
 
-namespace Floky\Facades;
+namespace Floky\Mail\Adapters;
 
 use Floky\Exceptions\MailerException;
+use Floky\Config\Config;
+use Floky\Mail\MailerInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
 
 
-class Email extends Facades
-{
+class PHPMailerAdapter implements MailerInterface {
 
-    private $mail;
+    private array $config;
 
-    private array $config = [];
-
-    public function __construct() {
-
-        $this->mail = new PHPMailer(true);
+    public function __construct(private PHPMailer $mail) {
 
         $this->config = Config::get('mail');
 
@@ -32,43 +29,35 @@ class Email extends Facades
 
         //Recipients
         $this->mail->setFrom($this->config['from'], env('APP_NAME'));
-    
     }
-
     public function setDebugLevel(int $level) {
 
-        $this->mail->SMTPDebug = $level;
-        return $this;
+        return $this->mail->SMTPDebug = $level;
     }
     
     public function isHtml(bool $value) {
 
-        $this->mail->isHTML($value);
-        return $this;
+        return $this->mail->isHTML($value);
     }
 
     public function from(string $from) {
 
-        $this->mail->setFrom($from);
-        return $this;
+        return $this->mail->setFrom($from);
     }
 
     public function altBody(string $altBody) {
 
-        $this->mail->AltBody = $altBody;
-        return $this;
+        return $this->mail->AltBody = $altBody;
     }
 
     public function attachement(string $path) {
 
-        $this->mail->addAttachment($path);
-        return $this;
+        return $this->mail->addAttachment($path);
     }
 
     public function replyTo(string $address) {
 
-        $this->mail->addReplyTo($address);
-        return $this;
+        return $this->mail->addReplyTo($address);
     }
 
     public function sendMail(array $recipients, string $subject, string $body, bool $addCC = false) {

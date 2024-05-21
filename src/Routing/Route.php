@@ -20,7 +20,16 @@ class Route
 
     private static string $defaultMethod = 'index';
 
-    public static array $verbs = ['GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE'];
+    private static array $verbs = ['GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE'];
+
+    private static array $resourceStub = [
+        '/' => ['method' => ['GET'], 'function' => 'index'],
+        '/show/{id}' => ['method' => ['GET'], 'function' => 'show'],
+        '/create' => ['method' => ["POST"], 'function' => 'create'],
+        '/edit/{id}' => ['method' => ["GET"], 'function' => 'edit'],
+        '/update' => ['method' => ["POST", "PATCH", "PUT"], 'function' => 'update'],
+        '/delete' => ['method' => ["POST", "DELETE"], 'function' => 'delete'],
+    ];
 
     private static ?string $current_route = null;
 
@@ -29,9 +38,9 @@ class Route
     {
         if (is_array($method)) {
 
-            foreach($method as $value) {
+            foreach ($method as $value) {
 
-                if (! in_array(strtoupper($value), self::$verbs)) {
+                if (!in_array(strtoupper($value), self::$verbs)) {
                     return false;
                 }
             }
@@ -85,6 +94,20 @@ class Route
         return self::add($uri, self::$verbs, $callback);
     }
 
+    public static function resource(string $name, string $controller, array $middlewares = [], array $except = [])
+    {
+        // TODO: Excepting URIs
+
+        $name = trim($name, '/');
+
+        foreach (self::$resourceStub as $uri => $data) {
+
+            self::add($name . $uri, $data['method'], [$controller, $data['function']]);
+            self::middlewares($middlewares);
+        }
+
+    }
+
 
     private static function add(string $uri, array $method, Closure | callable | array | null $callback)
     {
@@ -131,7 +154,7 @@ class Route
 
                 if (!in_array($method, $route_methods)) { // Bad route method
 
-                    throw new ParseErrorException("The '" . $route['uri']. "' route does not support the '$method' method but: " . implode(",", $route_methods), Code::BAD_METHOD);
+                    throw new ParseErrorException("The '" . $route['uri'] . "' route does not support the '$method' method but: " . implode(",", $route_methods), Code::BAD_METHOD);
                 }
 
                 $params = [];
@@ -141,27 +164,26 @@ class Route
 
                 }
 
-                if(isset($route['middlewares'])) {
+                if (isset($route['middlewares'])) {
 
                     $route_middlewares = self::getMiddlewareArray($route['middlewares'], $kernel);
 
                     self::runMiddlewares($route_middlewares, $request);
-
                 }
 
                 return self::runCallback($route_callback, $params);
-
             }
         }
 
         throw new NotFoundException('Page Not found', Code::PAGE_NOT_FOUND);
     }
 
-    public static function runCallback(array | Closure | callable | null $callback, array $params = []) {
+    public static function runCallback(array | Closure | callable | null $callback, array $params = [])
+    {
 
         $app = Application::getInstance();
-        
-        if (is_array($callback)) { 
+
+        if (is_array($callback)) {
 
             $controller = $app->services()->get($callback[0]);
 
@@ -170,11 +192,10 @@ class Route
             $resolved_method = $app->services()->getMethod($controller, $method, $params); // Get class & dependencies
 
             return $app->services()->runMethod($resolved_method);
-
         } else if (is_callable($callback)) {
 
             $resolved_callback = $app->services()->resolveFunction($callback, $params);
-            
+
             return call_user_func_array($resolved_callback[0], $resolved_callback[1]);
         }
 
@@ -185,16 +206,15 @@ class Route
     {
 
         self::$routes[self::$current_route]['middlewares'] = $middlewares;
-        
-        return new static;
 
+        return new static;
     }
 
     public static function name(string $name)
     {
-        foreach(self::getAll() as $route) {
+        foreach (self::getAll() as $route) {
 
-            if(isset($route["name"]) && $route["name"] == $name) {
+            if (isset($route["name"]) && $route["name"] == $name) {
 
                 $found = $route['uri'] == "" ? '/' : $route['uri'];
                 throw new ParseErrorException("'$name' is already used by '$found'", Code::ROUTE_ALREADY_EXIST);
@@ -202,11 +222,12 @@ class Route
         }
 
         self::$routes[self::$current_route]['name'] = $name;
-        
+
         return new static;
     }
 
-    private static function format_uri(string $uri) {
+    private static function format_uri(string $uri)
+    {
 
         return trim($uri, "/");
     }
@@ -217,17 +238,17 @@ class Route
         return self::$routes;
     }
 
-    public static function getRouteByName(string $name) {
+    public static function getRouteByName(string $name)
+    {
 
-        foreach(self::$routes as $route) {
+        foreach (self::$routes as $route) {
 
             if (isset($route['name']) && $route['name'] == $name) {
 
                 return $route;
             }
         }
-        
+
         return null;
     }
-
 }

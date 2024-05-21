@@ -9,8 +9,8 @@ use Exception;
 use Floky\Container\Container;
 use Floky\Exceptions\Code;
 use Floky\Exceptions\NotFoundException;
-use Floky\Facades\Config;
-use Floky\Facades\Security;
+use Floky\Config\Config;
+use Floky\Auth\Security;
 use Floky\Http\Controllers\Controller;
 use Floky\Http\Kernel;
 use Floky\Http\Middlewares\Middlewares;
@@ -105,9 +105,12 @@ class Application
 
         $httpKernel = self::getHttpKernel();
 
-        $request = $this->runMiddlewares($httpKernel->getAllMiddlewares(), $this->request);
+        $return = $this->runMiddlewares($httpKernel->getAllMiddlewares(), $this->request);
 
-        return $this->dispatch($request, $httpKernel);
+        if ($return instanceof Request) {
+
+            return $this->dispatch($this->request, $httpKernel);
+        }
     }
 
 
@@ -134,24 +137,27 @@ class Application
     private function loadAppRoutes(): void
     {
 
-        if(Config::get('app.providers.routing.attributes_in_controllers')){
+        if (Config::get('app.providers.routing.attributes_in_controllers') || true) {
 
             $this->loadRouteInControllers();
         }
 
-        $kernel = self::getHttpKernel();
+        if (Config::get('app.providers.routing.routing_in_files') || false) {
 
-        $path = app_routes_path();
+            $kernel = self::getHttpKernel();
 
-        foreach ($kernel->getRoutesGroup() as $group) {
+            $path = app_routes_path();
 
-            $group_file = $path . $group . ".php";
+            foreach ($kernel->getRoutesGroup() as $group) {
 
-            if (file_exists($group_file)) {
+                $group_file = $path . $group . ".php";
 
-                require_once $group_file;
-            } else
-                throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in " . app_routes_path(), Code::FILE_NOT_FOUND);
+                if (file_exists($group_file)) {
+
+                    require_once $group_file;
+                } else
+                    throw new NotFoundException("'$group' is registered but its file cannot be found. Make sure to create its file in " . app_routes_path(), Code::FILE_NOT_FOUND);
+            }
         }
     }
 
@@ -197,15 +203,16 @@ class Application
 
             $class = $namespace . pathinfo($file, PATHINFO_FILENAME);
 
-            if (pathinfo($file, PATHINFO_EXTENSION) === 'php' &&
+            if (
+                pathinfo($file, PATHINFO_EXTENSION) === 'php' &&
                 class_exists($class) &&
-                is_subclass_of($class, Controller::class))
-            
-                return $class;
+                is_subclass_of($class, Controller::class)
+            )
 
+                return $class;
         }, $files);
 
-        return array_filter($files, fn($file) => !is_null($file));
+        return array_filter($files, fn ($file) => !is_null($file));
     }
 
     private function getNamespaceFromPath(string $path): string
@@ -272,13 +279,14 @@ class Application
     public function handleException(Exception | Error $err)
     {
 
-        $exceptsInProduction = [Code::PAGE_NOT_FOUND, Code::UNAUTHORIZED, Code::APP_DOWN];
+        $exceptsInProduction = [Code::FORBIDDEN, Code::PAGE_NOT_FOUND, Code::UNAUTHORIZED, Code::APP_DOWN];
 
         $currentEnv = Config::get('app.environment') ?? Application::PRODUCTION;
 
         $template = match ($err->getCode()) {
 
             Code::PAGE_NOT_FOUND => 'templates.404',
+            Code::FORBIDDEN, => 'templates.403',
             Code::UNAUTHORIZED => 'templates.401',
             Code::APP_DOWN => 'templates.maintenance',
 

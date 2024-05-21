@@ -3,12 +3,12 @@
 namespace Floky\Http\Middlewares\Internal;
 
 use Closure;
-use Floky\Exceptions\ApplicationDownException;
-use Floky\Config\Config;
+use Floky\Auth\Auth;
 use Floky\Http\Middlewares\MiddlewareInterface;
 use Floky\Http\Requests\Request;
+use Floky\Exceptions\ForbiddenException;
 
-class BlockRequestMiddleware implements MiddlewareInterface
+class AuthMiddleware implements MiddlewareInterface
 {
 
     protected array $except = [];
@@ -17,13 +17,13 @@ class BlockRequestMiddleware implements MiddlewareInterface
     {
 
         if (! in_array($request->getUri(), $this->except)) {
+            
+            if (!Auth::user()) {
 
-            if(Config::get('app.maintenance')) {
-
-                throw new ApplicationDownException('The application is in maintenance mode.');
+                throw new ForbiddenException("You are not authorized to access this page");
             }
         }
-
+        
         return $next($request);
 
     }

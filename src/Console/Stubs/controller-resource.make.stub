@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Controllers;
+
+class {{name}} extends Controller
+{
+
+    public function index() {
+
+    }
+
+    public function show($id) {
+
+    }
+
+    public function create() {
+
+    }
+
+    public function edit($id) {
+
+    }
+
+    public function update() {
+
+    }
+
+    public function delete() {
+
+    }
+
+
+
+}

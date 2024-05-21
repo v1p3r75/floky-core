@@ -3,7 +3,7 @@
 namespace Floky\Console;
 
 use Floky\Application;
-use Floky\Facades\Config;
+use Floky\Config\Config;
 use Symfony\Component\Console\Application as ConsoleApplication;
 
 class Console extends ConsoleApplication

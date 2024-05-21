@@ -1,13 +1,21 @@
 <?php
 
 namespace App\Http\Middlewares;
+
+use Closure;
 use Floky\Http\Middlewares\MiddlewareInterface;
 use Floky\Http\Requests\Request;
 
 class {{name}} implements MiddlewareInterface
 {
-    public function handle(Request $request): Request {
 
-        return $request;
+
+    public function handle(Request $request, Closure $next)
+    {
+
+        // handle request
+
+        return $next($request);
+
     }
 }
